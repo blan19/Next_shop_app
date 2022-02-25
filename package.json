@@ -15,14 +15,19 @@
     "firebase": "^9.6.7",
     "next": "12.1.0",
     "next-dark-mode": "^3.0.0",
+    "next-themes": "^0.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-switch": "^6.0.0"
+    "react-switch": "^6.0.0",
+    "styled-components": "^5.3.3",
+    "use-dark-mode": "^2.3.1"
   },
   "devDependencies": {
     "@types/node": "17.0.21",
     "@types/react": "17.0.39",
+    "@types/styled-components": "^5.1.23",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "babel-plugin-styled-components": "^2.0.5",
     "eslint": "8.9.0",
     "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "^8.4.0",

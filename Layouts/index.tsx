@@ -1,10 +1,15 @@
+import { NextPage } from 'next';
 import React from 'react';
+import Footer from './Footer';
+import Header from './Header';
 
-const Layouts = () => {
+const Layouts: NextPage = ({ children }) => {
   return (
-    <div>
-      <h1>Layout..</h1>
-    </div>
+    <>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </>
   );
 };
 

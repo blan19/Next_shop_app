@@ -1,12 +1,15 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { NextPage } from 'next';
 import React from 'react';
+import Layouts from '../Layouts';
 
 const Index: NextPage = () => {
   return (
-    <IndexContainer>
-      <h1>Hello Next-Shop-App</h1>
-    </IndexContainer>
+    <Layouts>
+      <IndexContainer>
+        <h1>Main Page..!</h1>
+      </IndexContainer>
+    </Layouts>
   );
 };
 
