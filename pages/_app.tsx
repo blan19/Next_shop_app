@@ -1,7 +1,8 @@
 import type { AppProps } from 'next/app';
-import Theme, { GlobalStyles } from '@/utils/styles/Theme';
+import Theme from '@/utils/styles/Theme';
 import useDarkMode from 'use-dark-mode';
 import { ThemeProvider } from 'styled-components';
+import GlobalStyles from '@/utils/styles/GlobalStyles';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const darkMode = useDarkMode(false);
