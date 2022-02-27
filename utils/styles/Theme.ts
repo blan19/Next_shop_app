@@ -1,5 +1,29 @@
 import { css } from 'styled-components';
 
+export const Theme = {
+  light: {
+    /**
+     * Background Color
+     */
+    secondaryBackground: '#fafafa',
+    /**
+     * Text Colors
+     */
+    fontColor: '#000',
+  },
+  dark: {
+    /**
+     * Background Color
+     */
+    primaryBackground: '#181818',
+    secondaryBackground: '#0E141B',
+    /**
+     * Text Colors
+     */
+    fontColor: '#fff',
+  },
+};
+
 export const flexCenter = () => css`
   display: flex;
   align-items: center;

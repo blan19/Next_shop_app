@@ -30,9 +30,11 @@ export default createGlobalStyle`
   }
   body.dark-mode {
     background: #1E1E21;
+    --color-primaryText: #fff;
   }
   body.light-mode {
     background: #fff;
+    --color-primaryText: #000;
   }
   * {
     margin: 0;

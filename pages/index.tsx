@@ -15,4 +15,8 @@ const Index: NextPage = () => {
 
 export default Index;
 
-const IndexContainer = styled.div``;
+const IndexContainer = styled.div`
+  h1 {
+    color: var(--color-primaryText);
+  }
+`;

@@ -1,5 +1,6 @@
-import Responsive from '@/utils/styles/Responsive';
 import React, { useState } from 'react';
+import dynamic from 'next/dynamic';
+import Responsive from '@/utils/styles/Responsive';
 import styled from 'styled-components';
 import useDarkMode from 'use-dark-mode';
 import {
@@ -11,6 +12,9 @@ import {
 } from 'react-icons/io5';
 import Switch from 'react-switch';
 import { flexCenter } from '@/utils/styles/Theme';
+const DarkToggle = dynamic(() => import('../../components/Common/DarkToggle'), {
+  ssr: false,
+});
 
 const Header = () => {
   const darkMode = useDarkMode(false);
@@ -49,7 +53,7 @@ const Header = () => {
             </li>
             <li>
               <label>
-                <Switch
+                {/* <Switch
                   checked={darkMode.value}
                   onChange={() => darkMode.toggle()}
                   width={50}
@@ -57,7 +61,8 @@ const Header = () => {
                   handleDiameter={18}
                   offColor="#D2D2D2"
                   onColor="#F1C945"
-                />
+                /> */}
+                <DarkToggle />
               </label>
             </li>
           </ul>
