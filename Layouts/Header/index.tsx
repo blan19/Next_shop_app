@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 import Responsive from '@/utils/styles/Responsive';
 import styled from 'styled-components';
-import useDarkMode from 'use-dark-mode';
 import {
   IoCartSharp,
   IoEllipsisVerticalSharp,
@@ -10,14 +9,12 @@ import {
   IoHeartOutline,
   IoHeartSharp,
 } from 'react-icons/io5';
-import Switch from 'react-switch';
 import { flexCenter } from '@/utils/styles/Theme';
 const DarkToggle = dynamic(() => import('../../components/Common/DarkToggle'), {
   ssr: false,
 });
 
 const Header = () => {
-  const darkMode = useDarkMode(false);
   const [visible, setVisible] = useState(false);
   return (
     <HeaderContainer>
@@ -53,15 +50,6 @@ const Header = () => {
             </li>
             <li>
               <label>
-                {/* <Switch
-                  checked={darkMode.value}
-                  onChange={() => darkMode.toggle()}
-                  width={50}
-                  height={25}
-                  handleDiameter={18}
-                  offColor="#D2D2D2"
-                  onColor="#F1C945"
-                /> */}
                 <DarkToggle />
               </label>
             </li>
@@ -80,7 +68,7 @@ const HeaderContainer = styled.header`
   top: 0;
   left: 0;
   z-index: 999;
-  background: ${(props) => props.theme.bgColor};
+  background: var(--color-bgColor);
   box-shadow: rgba(0, 0, 0, 0.04) 0px 3px 5px;
 `;
 
@@ -92,7 +80,7 @@ const HeaderResponsive = styled(Responsive)`
   .left {
     h1 {
       font-size: 2.5rem;
-      color: ${(props) => props.theme.fontColor};
+      color: var(--color-primaryText);
     }
   }
   .right {
@@ -109,10 +97,10 @@ const HeaderResponsive = styled(Responsive)`
           margin-left: 5px;
           border-radius: 6px;
           &:hover {
-            background: ${(props) => props.theme.hoverColor};
+            background: var(--color-hoverColor);
           }
           svg {
-            color: ${(props) => props.theme.fontColor};
+            color: var(--color-primaryText);
           }
         }
         .header-hover-box.header-like {
@@ -124,9 +112,9 @@ const HeaderResponsive = styled(Responsive)`
           padding: 7.5px;
           margin-left: 5px;
           border-radius: 6px;
-          background: ${(props) => props.theme.fontColor};
+          background: var(--color-primaryText);
           svg {
-            color: ${(props) => props.theme.rFontColor};
+            color: var(--color-rPrimaryText);
           }
         }
         svg {

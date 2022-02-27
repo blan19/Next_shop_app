@@ -119,7 +119,7 @@ const AuthFormResponsive = styled(Responsive)`
     p {
       margin-top: 1.5rem;
       font-size: 1.5rem;
-      color: ${(props) => props.theme.fontSubColor};
+      color: var(--color-subText);
     }
   }
   .auth-contents {
@@ -142,7 +142,7 @@ const AuthFormResponsive = styled(Responsive)`
         font-size: 2rem;
         color: #9ba5ba;
         &::placeholder {
-          color: ${(props) => props.theme.fontSubColor};
+          color: var(--color-subText);
         }
       }
       .auth-adress {
@@ -160,7 +160,7 @@ const AuthFormTitle = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
   h1 {
-    color: ${(props) => props.theme.mainColor};
+    color: var(--color-mainColor);
     font-size: 5rem;
     cursor: pointer;
   }

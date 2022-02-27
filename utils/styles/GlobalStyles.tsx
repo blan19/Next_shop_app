@@ -30,11 +30,23 @@ export default createGlobalStyle`
   }
   body.dark-mode {
     background: #1E1E21;
+    --color-bgColor: #1E1E21;
     --color-primaryText: #fff;
+    --color-rPrimaryText: #000;
+    --color-subText: #D7D7D7;
+    --color-mainColor: #F5B3D5;
+    --color-subColor: #292A2D;
+    --color-hoverColor: #474C50;
   }
   body.light-mode {
     background: #fff;
+    --color-bgColor: #FFFFFF;
     --color-primaryText: #000;
+    --color-rPrimaryText: #fff;
+    --color-subText: #B5B5B3;
+    --color-mainColor: #F5B3D5;
+    --color-subColor: #E1E1E1;
+    --color-hoverColor: #efefef;
   }
   * {
     margin: 0;
