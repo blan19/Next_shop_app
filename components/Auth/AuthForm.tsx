@@ -97,7 +97,6 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
 export default AuthForm;
 
 const AuthFormContainer = styled.form`
-  z-index: 999;
   background: rgba(255, 255, 255, 0.05);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(6px);
@@ -144,6 +143,7 @@ const AuthFormResponsive = styled(Responsive)`
         &::placeholder {
           color: var(--color-subText);
         }
+        -webkit-text-fill-color: #9ba5ba;
       }
       .auth-adress {
         cursor: pointer;

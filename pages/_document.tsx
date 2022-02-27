@@ -37,6 +37,7 @@ class MyDocument extends Document {
       <Html lang="en">
         <Head></Head>
         <body>
+          <script src="noflash.js" />
           <Main />
           <NextScript />
         </body>
