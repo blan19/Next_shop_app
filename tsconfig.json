@@ -21,7 +21,8 @@
       "@/Layouts/*": ["Layouts/*"],
       "@/utils/*": ["utils/*"],
       "@/types/*": ["types/*"]
-    }
+    },
+    "types": ["iamport-typings"]
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

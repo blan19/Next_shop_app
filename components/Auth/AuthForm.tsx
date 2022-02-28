@@ -86,7 +86,14 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
           </label>
           <label>
             <span>Adress Detail</span>
-            <input {...register('adressDetail', { required: true })} />
+            <input
+              type="text"
+              {...register('adressDetail', { required: true })}
+              placeholder="상세주소"
+            />
+          </label>
+          <label>
+            <button>본인인증하고 회원가입</button>
           </label>
         </div>
       </AuthFormResponsive>
@@ -103,6 +110,7 @@ const AuthFormContainer = styled.form`
   -webkit-backdrop-filter: blur(6px);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.18);
+  z-index: 999;
 `;
 const AuthFormResponsive = styled(Responsive)`
   padding: 4rem 0;
@@ -146,6 +154,19 @@ const AuthFormResponsive = styled(Responsive)`
         -webkit-text-fill-color: #9ba5ba;
       }
       .auth-adress {
+        cursor: pointer;
+      }
+      button {
+        outline: none;
+        border: none;
+        background: none;
+        font-size: 2rem;
+        background: var(--color-rPrimaryText);
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        border-radius: 1rem;
+        padding: 1.4rem;
+        margin-top: 2rem;
+        color: #9ba5ba;
         cursor: pointer;
       }
     }
