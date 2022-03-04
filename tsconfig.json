@@ -21,9 +21,13 @@
       "@/Layouts/*": ["Layouts/*"],
       "@/utils/*": ["utils/*"],
       "@/types/*": ["types/*"]
-    },
-    "types": ["iamport-typings"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "utils/firebase/initAuth.js"
+  ],
   "exclude": ["node_modules"]
 }
