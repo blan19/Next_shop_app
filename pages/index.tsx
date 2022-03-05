@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 import { NextPage } from 'next';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Layouts from '../Layouts';
+import useAuthProvider from '@/hooks/useAuth';
 
 const Index: NextPage = () => {
+  const Auth = useAuthProvider();
+  useEffect(() => {
+    console.log(Auth.user);
+  }, [Auth.user]);
   return (
     <Layouts>
       <IndexContainer>

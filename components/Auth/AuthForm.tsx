@@ -1,15 +1,23 @@
 import Responsive from '@/utils/styles/Responsive';
 import { flexColCenter } from '@/utils/styles/Theme';
-import React, { FunctionComponent, useRef, useState } from 'react';
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import AuthAdress from './AuthAdress';
+import { useRouter } from 'next/router';
+import useAuthProvider from '@/hooks/useAuth';
 
 interface AuthFormProps {
   auth: string;
 }
 
-interface FormProps {
+export interface FormProps {
   email: string;
   password: string;
   passwordConfirm: string;
@@ -18,6 +26,7 @@ interface FormProps {
 }
 
 const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
+  const Auth = useAuthProvider();
   const {
     register,
     reset,
@@ -27,11 +36,28 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
   } = useForm<FormProps>();
   const [address, setAddress] = useState('');
   const [visible, setVisible] = useState(false);
+  const router = useRouter();
   const password = useRef<string>();
   password.current = watch('password');
 
-  const onSubmit = (data: FormProps) => {
-    console.log(data);
+  const onSubmit = async (data: FormProps) => {
+    try {
+      if (auth === 'Login') {
+        await Auth.login(data)
+          .then(() => router.push('/'))
+          .catch((error) => {
+            return { error };
+          });
+      } else {
+        await Auth.join(data)
+          .then(() => router.push('/auth/login'))
+          .catch((error) => {
+            return { error };
+          });
+      }
+    } catch (e) {
+      console.log(e);
+    }
     reset({
       email: '',
       password: '',
@@ -39,7 +65,29 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
       address: '',
       addressDetail: '',
     });
+    setAddress('');
   };
+
+  const onPush = useCallback(() => {
+    if (auth === 'Login') router.push('/auth/process/join');
+    else router.push('/auth/login');
+  }, [auth, router]);
+
+  useEffect(() => {
+    if (Auth.user) {
+      router.push('/');
+    }
+    return () => {
+      reset({
+        email: '',
+        password: '',
+        passwordConfirm: '',
+        address: '',
+        addressDetail: '',
+      });
+      setAddress('');
+    };
+  }, [Auth.user, reset, router]);
   return (
     <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
       <AuthFormResponsive>
@@ -148,6 +196,19 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
               <p>❌ 상세주소를 입력해주세요.</p>
             </AuthErrorMessage>
           )}
+          {auth !== 'Login' ? (
+            <div className="auth-nav">
+              <p>
+                이미 회원이신가요? <span onClick={onPush}>로그인</span>
+              </p>
+            </div>
+          ) : (
+            <div className="auth-nav">
+              <p>
+                회원이 아니신가요? <span onClick={onPush}>회원가입</span>
+              </p>
+            </div>
+          )}
           <label>
             {auth !== 'Login' ? (
               <button>본인인증하고 회원가입</button>
@@ -220,6 +281,20 @@ const AuthFormResponsive = styled(Responsive)`
         margin-top: 2rem;
         color: #9ba5ba;
         cursor: pointer;
+      }
+    }
+  }
+  .auth-nav {
+    padding-top: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    p {
+      color: var(--color-subText);
+      span {
+        cursor: pointer;
+        color: #9ba5ba;
+        font-weight: bold;
       }
     }
   }

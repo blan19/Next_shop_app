@@ -1,8 +1,8 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
-
-const firebaseConfig = {
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
+export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
@@ -12,6 +12,15 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
-
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const firebaseApp = firebase.app();
+const firebaseAuth = firebase.auth();
+const firebaseDb = firebase.firestore();
+const firebaseNow = firebase.firestore.Timestamp.now();
+const firebaseStorage = firebase.storage();
+export { firebaseApp, firebaseAuth, firebaseDb, firebaseNow, firebaseStorage };
+console.log(
+  firebaseApp.name ? 'Firebase Mode Activated!' : 'Firebase not working :(',
+);
