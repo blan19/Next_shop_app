@@ -1,9 +1,6 @@
 import type { AppProps } from 'next/app';
 import { RecoilRoot } from 'recoil';
 import GlobalStyles from '@/utils/styles/GlobalStyles';
-import initAuth from '@/utils/firebase/initAuth';
-
-initAuth();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

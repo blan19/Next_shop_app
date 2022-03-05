@@ -1,11 +1,8 @@
+import AuthContainer from '@/components/Auth/AuthContainer';
 import React from 'react';
 
 const Join = () => {
-  return (
-    <div>
-      <h1>회원가입 페이지</h1>
-    </div>
-  );
+  return <AuthContainer auth="Join" />;
 };
 
 export default Join;
