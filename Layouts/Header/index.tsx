@@ -10,44 +10,66 @@ import {
   IoHeartSharp,
 } from 'react-icons/io5';
 import { flexCenter } from '@/utils/styles/Theme';
+import useAuthProvider from '@/hooks/useAuth';
+import { useRouter } from 'next/router';
 const DarkToggle = dynamic(() => import('../../components/Common/DarkToggle'), {
   ssr: false,
 });
 
 const Header = () => {
+  const Auth = useAuthProvider();
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
+  const [more, setMore] = useState(false);
   return (
     <HeaderContainer>
       <HeaderResponsive>
         <div className="left">
-          <h1>Everything</h1>
+          <h1 onClick={() => router.push('/')}>Everything</h1>
         </div>
         <div className="right">
           <ul>
-            <li>
-              <div className="header-hover-box header-like">
-                {visible ? (
-                  <IoHeartSharp onMouseLeave={() => setVisible(false)} />
-                ) : (
-                  <IoHeartOutline onMouseOver={() => setVisible(true)} />
-                )}
-              </div>
-            </li>
-            <li>
-              <div className="header-cart-box">
-                <IoCartSharp />
-              </div>
-            </li>
-            <li>
-              <div className="header-user">
-                <div className="header-hover-box">
-                  <IoPerson />
+            {Auth.user ? (
+              <>
+                <li>
+                  <div className="header-hover-box header-like">
+                    {visible ? (
+                      <IoHeartSharp onMouseLeave={() => setVisible(false)} />
+                    ) : (
+                      <IoHeartOutline onMouseOver={() => setVisible(true)} />
+                    )}
+                  </div>
+                </li>
+                <li>
+                  <div className="header-cart-box">
+                    <IoCartSharp />
+                  </div>
+                </li>
+                <li>
+                  <div className="header-user">
+                    <div className="header-hover-box">
+                      <IoPerson />
+                    </div>
+                    <div className="header-hover-box header-logout-box">
+                      <IoEllipsisVerticalSharp
+                        onClick={() => setMore((prev) => !prev)}
+                      />
+                      {more && (
+                        <div className="header-logout-ab">
+                          <span onClick={() => Auth.logout()}>logout</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </li>
+              </>
+            ) : (
+              <li>
+                <div className="header-cart-box">
+                  <span onClick={() => router.push('/auth/login')}>login</span>
                 </div>
-                <div className="header-hover-box">
-                  <IoEllipsisVerticalSharp />
-                </div>
-              </div>
-            </li>
+              </li>
+            )}
             <li>
               <label>
                 <DarkToggle />
@@ -79,6 +101,7 @@ const HeaderResponsive = styled(Responsive)`
   padding: 20px 0;
   .left {
     h1 {
+      cursor: pointer;
       font-size: 2.5rem;
       color: var(--color-primaryText);
     }
@@ -108,6 +131,24 @@ const HeaderResponsive = styled(Responsive)`
             color: red;
           }
         }
+        .header-logout-box {
+          position: relative;
+          .header-logout-ab {
+            position: absolute;
+            background: var(--color-subColor);
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+            border-radius: 4px;
+            z-index: 999;
+            padding: 1rem 2rem;
+            top: 40px;
+            left: -18px;
+            span {
+              cursor: pointer;
+              color: var(--color-primaryText);
+              font-weight: bold;
+            }
+          }
+        }
         .header-cart-box {
           padding: 7.5px;
           margin-left: 5px;
@@ -115,6 +156,12 @@ const HeaderResponsive = styled(Responsive)`
           background: var(--color-primaryText);
           svg {
             color: var(--color-rPrimaryText);
+          }
+          span {
+            color: var(--color-rPrimaryText);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 0 1rem;
           }
         }
         svg {

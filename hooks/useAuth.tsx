@@ -62,7 +62,7 @@ export default function useAuthProvider(): useAuthHooksProps {
       .signInWithEmailAndPassword(email, password)
       .then(async (res: firebase.auth.UserCredential) => {
         setUser(res.user);
-        await getUserAdditionalData(user);
+        await getUserAdditionalData(res.user);
         return res.user;
       })
       .catch((error) => {
@@ -70,7 +70,7 @@ export default function useAuthProvider(): useAuthHooksProps {
       });
   };
 
-  const getUserAdditionalData = async (user: firebase.User): any => {
+  const getUserAdditionalData = async (user: any): any => {
     return await firebaseDb
       .collection('users')
       .doc(user.uid)
