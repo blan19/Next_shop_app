@@ -2,6 +2,8 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
+import { getAuth } from 'firebase/auth';
+import { collection, getDoc } from 'firebase/firestore';
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -20,7 +22,17 @@ const firebaseAuth = firebase.auth();
 const firebaseDb = firebase.firestore();
 const firebaseNow = firebase.firestore.Timestamp.now();
 const firebaseStorage = firebase.storage();
-export { firebaseApp, firebaseAuth, firebaseDb, firebaseNow, firebaseStorage };
+const hookAuth = getAuth(firebaseApp);
+export {
+  firebaseApp,
+  firebaseAuth,
+  firebaseDb,
+  firebaseNow,
+  firebaseStorage,
+  hookAuth,
+  collection,
+  getDoc,
+};
 console.log(
   firebaseApp.name ? 'Firebase Mode Activated!' : 'Firebase not working :(',
 );

@@ -10,14 +10,16 @@ import {
   IoHeartSharp,
 } from 'react-icons/io5';
 import { flexCenter } from '@/utils/styles/Theme';
-import useAuthProvider from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { hookAuth } from '@/utils/firebase/clientApp';
+import { signOut } from 'firebase/auth';
 const DarkToggle = dynamic(() => import('../../components/Common/DarkToggle'), {
   ssr: false,
 });
 
 const Header = () => {
-  const Auth = useAuthProvider();
+  const [user] = useAuthState(hookAuth);
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [more, setMore] = useState(false);
@@ -29,7 +31,7 @@ const Header = () => {
         </div>
         <div className="right">
           <ul>
-            {Auth.user ? (
+            {user ? (
               <>
                 <li>
                   <div className="header-hover-box header-like">
@@ -56,7 +58,7 @@ const Header = () => {
                       />
                       {more && (
                         <div className="header-logout-ab">
-                          <span onClick={() => Auth.logout()}>logout</span>
+                          <span onClick={() => signOut(hookAuth)}>logout</span>
                         </div>
                       )}
                     </div>

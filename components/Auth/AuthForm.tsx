@@ -1,5 +1,3 @@
-import Responsive from '@/utils/styles/Responsive';
-import { flexColCenter } from '@/utils/styles/Theme';
 import React, {
   FunctionComponent,
   useCallback,
@@ -7,11 +5,14 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import Responsive from '@/utils/styles/Responsive';
+import { flexColCenter } from '@/utils/styles/Theme';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import AuthAdress from './AuthAdress';
 import { useRouter } from 'next/router';
-import useAuthProvider from '@/hooks/useAuth';
+import fetchJson from '@/utils/lib/fetchJson';
+import useUser from '@/hooks/useUser';
 
 interface AuthFormProps {
   auth: string;
@@ -26,7 +27,7 @@ export interface FormProps {
 }
 
 const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
-  const Auth = useAuthProvider();
+  const { mutateUser } = useUser({ redirectTo: '/', redirectIfFound: true });
   const {
     register,
     reset,
@@ -41,31 +42,34 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
   password.current = watch('password');
 
   const onSubmit = async (data: FormProps) => {
+    const { email, password, address, addressDetail } = data;
+    const fullAddress = `${address} ${addressDetail}`;
+    const body = {
+      email,
+      password,
+      address: fullAddress,
+    };
     try {
       if (auth === 'Login') {
-        await Auth.login(data)
-          .then(() => router.push('/'))
-          .catch((error) => {
-            return { error };
-          });
+        await mutateUser(
+          fetchJson('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          }),
+        );
       } else {
-        await Auth.join(data)
-          .then(() => router.push('/auth/login'))
-          .catch((error) => {
-            return { error };
-          });
+        await mutateUser(
+          fetchJson('/api/join', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          }),
+        );
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
     }
-    reset({
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      address: '',
-      addressDetail: '',
-    });
-    setAddress('');
   };
 
   const onPush = useCallback(() => {
@@ -74,9 +78,6 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
   }, [auth, router]);
 
   useEffect(() => {
-    if (Auth.user) {
-      router.push('/');
-    }
     return () => {
       reset({
         email: '',
@@ -87,7 +88,8 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
       });
       setAddress('');
     };
-  }, [Auth.user, reset, router]);
+  }, [reset]);
+
   return (
     <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
       <AuthFormResponsive>
