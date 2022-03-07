@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Responsive from '@/utils/styles/Responsive';
 import styled from 'styled-components';
@@ -11,18 +11,23 @@ import {
 } from 'react-icons/io5';
 import { flexCenter } from '@/utils/styles/Theme';
 import { useRouter } from 'next/router';
-import { useAuthState } from 'react-firebase-hooks/auth';
 import { hookAuth } from '@/utils/firebase/clientApp';
 import { signOut } from 'firebase/auth';
+import axios from 'axios';
+import useUser from '@/hooks/useUser';
 const DarkToggle = dynamic(() => import('../../components/Common/DarkToggle'), {
   ssr: false,
 });
 
 const Header = () => {
-  const [user] = useAuthState(hookAuth);
+  const { user } = useUser();
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [more, setMore] = useState(false);
+  const logout = useCallback(async () => {
+    await axios.post('/api/logout', null);
+    await signOut(hookAuth);
+  }, []);
   return (
     <HeaderContainer>
       <HeaderResponsive>
@@ -31,7 +36,7 @@ const Header = () => {
         </div>
         <div className="right">
           <ul>
-            {user ? (
+            {user?.isLoggedIn ? (
               <>
                 <li>
                   <div className="header-hover-box header-like">
@@ -58,7 +63,7 @@ const Header = () => {
                       />
                       {more && (
                         <div className="header-logout-ab">
-                          <span onClick={() => signOut(hookAuth)}>logout</span>
+                          <span onClick={() => logout()}>logout</span>
                         </div>
                       )}
                     </div>
