@@ -2,21 +2,22 @@ import styled from 'styled-components';
 import { NextPage } from 'next';
 import React from 'react';
 import Layouts from '../Layouts';
+import Responsive from '@/utils/styles/Responsive';
+import TimeBoard from '@/components/Main/TimeBoard';
 
 const Index: NextPage = () => {
   return (
     <Layouts>
-      <IndexContainer>
+      <IndexResponsive>
+        <TimeBoard />
         <h1>Main Page..!</h1>
-      </IndexContainer>
+      </IndexResponsive>
     </Layouts>
   );
 };
 
 export default Index;
 
-const IndexContainer = styled.div`
-  h1 {
-    color: var(--color-primaryText);
-  }
+const IndexResponsive = styled(Responsive)`
+  margin-top: 3rem;
 `;

@@ -5,13 +5,13 @@ import Responsive from '@/utils/styles/Responsive';
 import Layouts from '../Layouts';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionOptions } from '@/utils/iron/session';
-import { User } from './api/user';
 import { InferGetServerSidePropsType } from 'next';
 
 const Admin = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
+
   useEffect(() => {
     if (!user.isLoggedIn) {
       router.push('/');
@@ -48,7 +48,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({
       },
     };
   }
-  if (user.email === process.env.ADMIN_EMAIL) {
+  if (user.email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
     return {
       props: { user: { ...req.session.user, admin: true } },
     };
