@@ -9,6 +9,7 @@ import {
   IoHeartOutline,
   IoHeartSharp,
 } from 'react-icons/io5';
+import { RiAdminFill } from 'react-icons/ri';
 import { flexCenter } from '@/utils/styles/Theme';
 import { useRouter } from 'next/router';
 import { hookAuth } from '@/utils/firebase/clientApp';
@@ -28,6 +29,9 @@ const Header = () => {
     await axios.post('/api/logout', null);
     await signOut(hookAuth);
   }, []);
+  const onPushAdmin = useCallback(() => {
+    router.push('/admin');
+  }, [router]);
   return (
     <HeaderContainer>
       <HeaderResponsive>
@@ -38,6 +42,13 @@ const Header = () => {
           <ul>
             {user?.isLoggedIn ? (
               <>
+                <li>
+                  {user.admin && (
+                    <div className="header-hover-box">
+                      <RiAdminFill onClick={onPushAdmin} />
+                    </div>
+                  )}
+                </li>
                 <li>
                   <div className="header-hover-box header-like">
                     {visible ? (
@@ -148,7 +159,7 @@ const HeaderResponsive = styled(Responsive)`
             z-index: 999;
             padding: 1rem 2rem;
             top: 40px;
-            left: -18px;
+            left: -1.8rem;
             span {
               cursor: pointer;
               color: var(--color-primaryText);

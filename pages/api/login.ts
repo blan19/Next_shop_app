@@ -13,14 +13,27 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       password,
     );
     if (credentials) {
-      const user = {
-        isLoggedIn: true,
-        email,
-        uid: credentials.user?.uid,
-      } as User;
-      req.session.user = user;
-      await req.session.save();
-      res.json(user);
+      if (credentials.user?.email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
+        const user = {
+          isLoggedIn: true,
+          admin: true,
+          email,
+          uid: credentials.user?.uid,
+        } as User;
+        req.session.user = user;
+        await req.session.save();
+        res.json(user);
+      } else {
+        const user = {
+          isLoggedIn: true,
+          admin: false,
+          email,
+          uid: credentials.user?.uid,
+        } as User;
+        req.session.user = user;
+        await req.session.save();
+        res.json(user);
+      }
     } else {
       res.status(500).json({ message: 'failed login' });
     }
