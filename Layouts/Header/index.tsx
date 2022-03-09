@@ -21,16 +21,17 @@ const DarkToggle = dynamic(() => import('../../components/Common/DarkToggle'), {
 });
 
 const Header = () => {
-  const { user } = useUser();
+  const { user, mutateUser } = useUser();
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const [more, setMore] = useState(false);
   const logout = useCallback(async () => {
     await axios.post('/api/logout', null);
     await signOut(hookAuth);
-  }, []);
+    mutateUser();
+  }, [mutateUser]);
   const onPushAdmin = useCallback(() => {
-    router.push('/admin');
+    router.push('/admin/register');
   }, [router]);
   return (
     <HeaderContainer>

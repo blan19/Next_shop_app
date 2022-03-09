@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import styled from 'styled-components';
-import Responsive from '@/utils/styles/Responsive';
-import Layouts from '../Layouts';
 import { withIronSessionSsr } from 'iron-session/next';
 import { sessionOptions } from '@/utils/iron/session';
 import { InferGetServerSidePropsType } from 'next';
+import { useEffect } from 'react';
+import styled from 'styled-components';
+import Responsive from '@/utils/styles/Responsive';
+import Layouts from '../../Layouts';
+import RegisterForm from '@/components/admin/RegisterForm';
 
-const Admin = ({
+const Register = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
-
   useEffect(() => {
     if (!user.isLoggedIn) {
       router.push('/');
@@ -22,16 +22,18 @@ const Admin = ({
   }, [router, user.admin, user.isLoggedIn]);
   return (
     <Layouts>
-      <AdminResponsive>
-        <h1>admin page</h1>
-      </AdminResponsive>
+      <RegisterResponsive>
+        <RegisterForm />
+      </RegisterResponsive>
     </Layouts>
   );
 };
 
-export default Admin;
+export default Register;
 
-const AdminResponsive = styled(Responsive)``;
+const RegisterResponsive = styled(Responsive)`
+  margin-top: 3rem;
+`;
 
 export const getServerSideProps = withIronSessionSsr(async function ({
   req,

@@ -302,7 +302,7 @@ const AuthFormResponsive = styled(Responsive)`
   }
 `;
 
-const AuthErrorMessage = styled.div`
+export const AuthErrorMessage = styled.div`
   padding: 1rem 0;
   p {
     font-size: 1.5rem;
