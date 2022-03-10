@@ -5,7 +5,18 @@ import RegisterDelivery from './RegisterDelivery';
 import RegisterField from './RegisterField';
 import ThumbInput from './ThumbInput';
 import { ErrorMessage } from '@hookform/error-message';
-import { firebaseStorage, uploadBytes } from '@/utils/firebase/clientApp';
+import {
+  firebaseStorage,
+  uploadBytes,
+  uploadBytesResumable,
+} from '@/utils/firebase/clientApp';
+import RegisterLoading from './RegisterLoading';
+import {
+  getDownloadURL,
+  UploadTask,
+  UploadTaskSnapshot,
+  UploadResult,
+} from 'firebase/storage';
 
 type sizeDetailType = {
   detail_1: string;
@@ -37,6 +48,7 @@ interface RegisterFormTpyes {
 }
 
 const RegisterForm: FC = () => {
+  const [thumbUrl, setThumbUrl] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const methods = useForm<RegisterFormTpyes>({
     mode: 'onBlur',
@@ -45,26 +57,59 @@ const RegisterForm: FC = () => {
     formState: { errors },
   } = methods;
   const onSubmit = methods.handleSubmit(
-    useCallback(async (data) => {
-      const {
-        title,
-        thumbnail,
-        productInfo,
-        price,
-        size,
-        sizeDetail,
-        option,
-        optionDetail,
-        category,
-        delivery,
-      } = data;
-      thumbnail.map(async (file) => {
-        const storageRef = await firebaseStorage.ref(`Thumbnail/${file.name}`);
-        await uploadBytes(storageRef, file, { contentType: file.type })
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
-      });
-    }, []),
+    useCallback(
+      async (data) => {
+        const {
+          title,
+          thumbnail,
+          productInfo,
+          price,
+          size,
+          sizeDetail,
+          option,
+          optionDetail,
+          category,
+          delivery,
+        } = data;
+        setLoading(true);
+        try {
+          thumbnail.map(async (file) => {
+            const storageRef = await firebaseStorage.ref(
+              `Thumbnail/${file.name}`,
+            );
+            await uploadBytesResumable(storageRef, file, {
+              contentType: file.type,
+            }).on(
+              'state_changed',
+              (snapshot: UploadTaskSnapshot) => {
+                const progress =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                switch (snapshot.state) {
+                  case 'paused':
+                    console.log('Upload is paused');
+                    break;
+                  case 'running':
+                    console.log('Upload is running');
+                    break;
+                }
+              },
+              (error) => {
+                console.log(error);
+              },
+              () => {
+                getDownloadURL(storageRef)
+                  .then((url) => setThumbUrl((prev) => [...prev, url]))
+                  .then(() => console.log(thumbUrl));
+              },
+            );
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      },
+      [setLoading, thumbUrl, setThumbUrl],
+    ),
   );
   const option = methods.watch('option');
   const size = methods.watch('size');
@@ -76,122 +121,138 @@ const RegisterForm: FC = () => {
       });
   }, [methods]);
   return (
-    <FormProvider {...methods}>
-      <RegisterFormContainer onSubmit={onSubmit}>
-        <div className="register-left">
-          <label>
-            <span className="register-label">상품명</span>
-            <RegisterInputStyles
-              {...methods.register('title', {
-                required: '상품명을 입력해주세요.',
-              })}
-              type="text"
-            />
-            <ErrorMessage
-              errors={errors}
-              name="title"
-              render={({ message }) => (
-                <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
-              )}
-            />
-          </label>
-          <label>
-            <span className="register-label">썸네일</span>
-            <ThumbInput
-              accept="image/png, image/jpg, image/jpeg"
-              multiple
-              name="thumbnail"
-              mode="append"
-            />
-            <ErrorMessage
-              errors={errors}
-              name="thumbnail"
-              render={({ message }) => (
-                <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
-              )}
-            />
-          </label>
-          <label>
-            <span className="register-label">상품 Information</span>
-            <ThumbInput
-              accept="image/png, image/jpg, image/jpeg"
-              multiple
-              name="productInfo"
-              mode="append"
-            />
-          </label>
-          <label>
-            <span className="register-label">가격</span>
-            <RegisterInputStyles
-              {...methods.register('price', {
-                required: { value: true, message: '상품가격을 입력해주세요.' },
-              })}
-              type="number"
-            />
-            <ErrorMessage
-              errors={errors}
-              name="price"
-              render={({ message }) => (
-                <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
-              )}
-            />
-          </label>
-        </div>
-        <div className="register-right">
-          <div className="register-option">
-            <span className="register-label">옵션</span>
-            <input
-              type="checkbox"
-              {...methods.register('option')}
-              id="option"
-            />
-            <label htmlFor="option" />
-            {option && <RegisterField mode="option" name="optionDetail" />}
+    <>
+      <FormProvider {...methods}>
+        <RegisterFormContainer onSubmit={onSubmit}>
+          <div className="register-left">
+            <label>
+              <span className="register-label">상품명</span>
+              <RegisterInputStyles
+                {...methods.register('title', {
+                  required: '상품명을 입력해주세요.',
+                })}
+                type="text"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="title"
+                render={({ message }) => (
+                  <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
+                )}
+              />
+            </label>
+            <label>
+              <span className="register-label">썸네일</span>
+              <ThumbInput
+                accept="image/png, image/jpg, image/jpeg"
+                multiple
+                name="thumbnail"
+                mode="append"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="thumbnail"
+                render={({ message }) => (
+                  <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
+                )}
+              />
+            </label>
+            <label>
+              <span className="register-label">상품 Information</span>
+              <ThumbInput
+                accept="image/png, image/jpg, image/jpeg"
+                multiple
+                name="productInfo"
+                mode="append"
+              />
+            </label>
+            <label>
+              <span className="register-label">가격</span>
+              <RegisterInputStyles
+                {...methods.register('price', {
+                  required: {
+                    value: true,
+                    message: '상품가격을 입력해주세요.',
+                  },
+                })}
+                type="number"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="price"
+                render={({ message }) => (
+                  <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
+                )}
+              />
+            </label>
           </div>
-          <div className="register-size">
-            <span className="register-label">사이즈</span>
-            <input type="checkbox" {...methods.register('size')} id="size" />
-            <label htmlFor="size" />
-            {size && <RegisterField mode="size" name="sizeDetail" />}
-          </div>
-          <div className="register-category">
-            <span className="register-label">카테고리</span>
-            <select
-              {...methods.register('category', {
-                required: { value: true, message: '카테고리를 선택해주세요.' },
-              })}
-            >
-              <option value="CLOTHES">CLOTHES</option>
-              <option value="ACC">ACC</option>
-              <option value="Food">Food</option>
-            </select>
-            <ErrorMessage
-              errors={errors}
-              name="category"
-              render={({ message }) => (
-                <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
-              )}
-            />
-          </div>
-          <div className="register-delivery">
-            <span className="register-label">배송</span>
-            <div className="register-delivery-wrapper">
-              <span>무료/유료 </span>
+          <div className="register-right">
+            <div className="register-option">
+              <span className="register-label">옵션</span>
               <input
                 type="checkbox"
-                {...methods.register('delivery.costCheck')}
-                id="delivery"
+                {...methods.register('option')}
+                id="option"
               />
-              <label htmlFor="delivery" />
+              <label htmlFor="option" />
+              {option && <RegisterField mode="option" name="optionDetail" />}
             </div>
-            <RegisterDelivery />
+            <div className="register-size">
+              <span className="register-label">사이즈</span>
+              <input type="checkbox" {...methods.register('size')} id="size" />
+              <label htmlFor="size" />
+              {size && <RegisterField mode="size" name="sizeDetail" />}
+            </div>
+            <div className="register-category">
+              <span className="register-label">카테고리</span>
+              <select
+                {...methods.register('category', {
+                  required: {
+                    value: true,
+                    message: '카테고리를 선택해주세요.',
+                  },
+                })}
+              >
+                <option value="CLOTHES">CLOTHES</option>
+                <option value="ACC">ACC</option>
+                <option value="Food">Food</option>
+              </select>
+              <ErrorMessage
+                errors={errors}
+                name="category"
+                render={({ message }) => (
+                  <RegisterErrorMessage>❌ {message}</RegisterErrorMessage>
+                )}
+              />
+            </div>
+            <div className="register-delivery">
+              <span className="register-label">배송</span>
+              <div className="register-delivery-wrapper">
+                <span>무료/유료 </span>
+                <input
+                  type="checkbox"
+                  {...methods.register('delivery.costCheck')}
+                  id="delivery"
+                />
+                <label htmlFor="delivery" />
+              </div>
+              <RegisterDelivery />
+            </div>
           </div>
-        </div>
-        <div className="register-submit-button">
-          <button type="submit">등록</button>
-        </div>
-      </RegisterFormContainer>
-    </FormProvider>
+          <div className="register-submit-button">
+            <button type="submit">등록</button>
+          </div>
+        </RegisterFormContainer>
+      </FormProvider>
+      {loading && (
+        <RegisterLoading
+          type="spinningBubbles"
+          color="#fff"
+          width="64px"
+          height="64px"
+        />
+      )}
+    </>
   );
 };
 
@@ -199,6 +260,7 @@ export default RegisterForm;
 
 const RegisterFormContainer = styled.form`
   display: grid;
+  position: relative;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   .register-label {
