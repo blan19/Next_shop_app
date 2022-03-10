@@ -4,6 +4,12 @@ import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import { getAuth } from 'firebase/auth';
 import { collection, getDoc } from 'firebase/firestore';
+import {
+  uploadBytes,
+  uploadBytesResumable,
+  UploadTask,
+  UploadTaskSnapshot,
+} from 'firebase/storage';
 export const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -32,6 +38,8 @@ export {
   hookAuth,
   collection,
   getDoc,
+  uploadBytes,
+  uploadBytesResumable,
 };
 console.log(
   firebaseApp.name ? 'Firebase Mode Activated!' : 'Firebase not working :(',

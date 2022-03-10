@@ -1,10 +1,23 @@
-import { FC, useEffect } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
 import RegisterDelivery from './RegisterDelivery';
 import RegisterField from './RegisterField';
 import ThumbInput from './ThumbInput';
 import { ErrorMessage } from '@hookform/error-message';
+import { firebaseStorage, uploadBytes } from '@/utils/firebase/clientApp';
+
+type sizeDetailType = {
+  detail_1: string;
+  detail_2: string;
+  detail_3: string;
+  detail_4: string;
+  size: string;
+};
+
+type optionDetailType = {
+  contents: string;
+};
 
 interface RegisterFormTpyes {
   title: string;
@@ -12,7 +25,9 @@ interface RegisterFormTpyes {
   productInfo: File[];
   price: string;
   size: boolean;
+  sizeDetail: sizeDetailType[];
   option: boolean;
+  optionDetail: optionDetailType[];
   category: string;
   delivery: {
     costCheck: boolean;
@@ -22,15 +37,35 @@ interface RegisterFormTpyes {
 }
 
 const RegisterForm: FC = () => {
+  const [loading, setLoading] = useState(false);
   const methods = useForm<RegisterFormTpyes>({
     mode: 'onBlur',
   });
   const {
     formState: { errors },
   } = methods;
-  const onSubmit = methods.handleSubmit((values) => {
-    console.log('values', values);
-  });
+  const onSubmit = methods.handleSubmit(
+    useCallback(async (data) => {
+      const {
+        title,
+        thumbnail,
+        productInfo,
+        price,
+        size,
+        sizeDetail,
+        option,
+        optionDetail,
+        category,
+        delivery,
+      } = data;
+      thumbnail.map(async (file) => {
+        const storageRef = await firebaseStorage.ref(`Thumbnail/${file.name}`);
+        await uploadBytes(storageRef, file, { contentType: file.type })
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      });
+    }, []),
+  );
   const option = methods.watch('option');
   const size = methods.watch('size');
 
