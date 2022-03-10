@@ -6,17 +6,13 @@ import RegisterField from './RegisterField';
 import ThumbInput from './ThumbInput';
 import { ErrorMessage } from '@hookform/error-message';
 import {
+  firebaseDb,
   firebaseStorage,
-  uploadBytes,
   uploadBytesResumable,
 } from '@/utils/firebase/clientApp';
 import RegisterLoading from './RegisterLoading';
-import {
-  getDownloadURL,
-  UploadTask,
-  UploadTaskSnapshot,
-  UploadResult,
-} from 'firebase/storage';
+import { getDownloadURL, UploadTaskSnapshot } from 'firebase/storage';
+import { uid } from 'uid';
 
 type sizeDetailType = {
   detail_1: string;
@@ -48,7 +44,6 @@ interface RegisterFormTpyes {
 }
 
 const RegisterForm: FC = () => {
-  const [thumbUrl, setThumbUrl] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const methods = useForm<RegisterFormTpyes>({
     mode: 'onBlur',
@@ -56,6 +51,42 @@ const RegisterForm: FC = () => {
   const {
     formState: { errors },
   } = methods;
+  const uploadTaskPromise = (path: string, images: File[] | undefined) => {
+    return new Promise((resolve) => {
+      if (!images) return;
+      const url = images.map((file) => {
+        return new Promise((resolver, reject) => {
+          const storageRef = firebaseStorage.ref(`${path}${file.name}`);
+          uploadBytesResumable(storageRef, file, {
+            contentType: file.type,
+          }).on(
+            'state_changed',
+            (snapshot: UploadTaskSnapshot) => {
+              const progress =
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+              console.log('Upload is ' + progress + '% done');
+              switch (snapshot.state) {
+                case 'paused':
+                  console.log('Upload is paused');
+                  break;
+                case 'running':
+                  console.log('Upload is running');
+                  break;
+              }
+            },
+            (error) => {
+              console.log(error);
+              reject();
+            },
+            () => {
+              getDownloadURL(storageRef).then((url) => resolver(url));
+            },
+          );
+        });
+      });
+      resolve(Promise.all(url));
+    });
+  };
   const onSubmit = methods.handleSubmit(
     useCallback(
       async (data) => {
@@ -69,56 +100,70 @@ const RegisterForm: FC = () => {
           option,
           optionDetail,
           category,
-          delivery,
+          delivery: { costCheck, cost, company },
         } = data;
         setLoading(true);
         try {
-          thumbnail.map(async (file) => {
-            const storageRef = await firebaseStorage.ref(
-              `Thumbnail/${file.name}`,
-            );
-            await uploadBytesResumable(storageRef, file, {
-              contentType: file.type,
-            }).on(
-              'state_changed',
-              (snapshot: UploadTaskSnapshot) => {
-                const progress =
-                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                switch (snapshot.state) {
-                  case 'paused':
-                    console.log('Upload is paused');
-                    break;
-                  case 'running':
-                    console.log('Upload is running');
-                    break;
-                }
-              },
-              (error) => {
-                console.log(error);
-              },
-              () => {
-                getDownloadURL(storageRef)
-                  .then((url) => setThumbUrl((prev) => [...prev, url]))
-                  .then(() => console.log(thumbUrl));
-              },
-            );
-          });
+          const thumbUrl = await uploadTaskPromise('Thumbnail/', thumbnail);
+          if (productInfo !== undefined) {
+            const infoUrl = await uploadTaskPromise('Info/', productInfo);
+            await firebaseDb
+              .collection('products')
+              .doc(uid(24))
+              .set({
+                title,
+                price,
+                thumbPath: thumbUrl,
+                infoPath: infoUrl,
+                size,
+                sizeInfo: size ? sizeDetail : null,
+                option,
+                optionInfo: option ? optionDetail : null,
+                category,
+                deliveryFree: costCheck,
+                deliveryCost: costCheck ? cost : null,
+                deliveryCompany: company,
+              })
+              .then(() => {
+                setLoading(false);
+                methods.reset();
+              })
+              .catch((e) => console.log(e));
+          }
+          await firebaseDb
+            .collection('products')
+            .doc(uid(24))
+            .set({
+              title,
+              price,
+              thumbPath: thumbUrl,
+              infoPath: null,
+              size,
+              sizeInfo: size ? sizeDetail : null,
+              option,
+              optionInfo: option ? optionDetail : null,
+              category,
+              deliveryFree: costCheck,
+              deliveryCost: costCheck ? cost : null,
+              deliveryCompany: company,
+            })
+            .then(() => {
+              setLoading(false);
+              methods.reset();
+            })
+            .catch((e) => console.log(e));
         } catch (e) {
           console.error(e);
         }
       },
-      [setLoading, thumbUrl, setThumbUrl],
+      [methods],
     ),
   );
   const option = methods.watch('option');
   const size = methods.watch('size');
 
   useEffect(() => {
-    return () =>
-      methods.reset({
-        title: '',
-      });
+    return () => methods.reset();
   }, [methods]);
   return (
     <>
