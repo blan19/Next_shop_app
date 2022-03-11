@@ -3,6 +3,9 @@ import { sessionOptions } from '@/utils/iron/session';
 import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Layouts from 'Layouts';
+import AdminNav from '@/components/admin/AdminNav';
+import { RegisterResponsive } from './register';
 
 const Edit = ({
   user,
@@ -17,9 +20,12 @@ const Edit = ({
     }
   }, [router, user.admin, user.isLoggedIn]);
   return (
-    <div>
-      <h1>상품 수정 페이지입니다</h1>
-    </div>
+    <Layouts>
+      <RegisterResponsive>
+        <AdminNav />
+        <h1>Edit page</h1>
+      </RegisterResponsive>
+    </Layouts>
   );
 };
 
@@ -31,7 +37,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({
 }) {
   const user = req.session.user;
   if (user === undefined) {
-    res.setHeader('location', '/login');
+    res.setHeader('location', '/auth/login');
     res.statusCode = 302;
     res.end();
     return {

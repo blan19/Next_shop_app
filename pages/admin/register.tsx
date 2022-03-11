@@ -6,7 +6,8 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import Responsive from '@/utils/styles/Responsive';
 import Layouts from '../../Layouts';
-import RegisterForm from '@/components/admin/RegisterForm';
+import RegisterForm from '@/components/admin/Register/RegisterForm';
+import AdminNav from '@/components/admin/AdminNav';
 
 const Register = ({
   user,
@@ -23,6 +24,7 @@ const Register = ({
   return (
     <Layouts>
       <RegisterResponsive>
+        <AdminNav />
         <RegisterForm />
       </RegisterResponsive>
     </Layouts>
@@ -31,7 +33,7 @@ const Register = ({
 
 export default Register;
 
-const RegisterResponsive = styled(Responsive)`
+export const RegisterResponsive = styled(Responsive)`
   margin-top: 3rem;
 `;
 
@@ -41,7 +43,7 @@ export const getServerSideProps = withIronSessionSsr(async function ({
 }) {
   const user = req.session.user;
   if (user === undefined) {
-    res.setHeader('location', '/login');
+    res.setHeader('location', '/auth/login');
     res.statusCode = 302;
     res.end();
     return {

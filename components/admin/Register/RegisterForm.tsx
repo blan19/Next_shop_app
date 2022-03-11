@@ -13,6 +13,9 @@ import {
 import RegisterLoading from './RegisterLoading';
 import { getDownloadURL, UploadTaskSnapshot } from 'firebase/storage';
 import { uid } from 'uid';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import useDarkMode from 'use-dark-mode';
 
 type sizeDetailType = {
   detail_1: string;
@@ -44,6 +47,7 @@ interface RegisterFormTpyes {
 }
 
 const RegisterForm: FC = () => {
+  const { value: darkMode } = useDarkMode(false);
   const [loading, setLoading] = useState(false);
   const methods = useForm<RegisterFormTpyes>({
     mode: 'onBlur',
@@ -123,10 +127,25 @@ const RegisterForm: FC = () => {
                 deliveryFree: costCheck,
                 deliveryCost: costCheck ? cost : null,
                 deliveryCompany: company,
+                clear: false,
               })
               .then(() => {
                 setLoading(false);
                 methods.reset();
+                toast('등록을 완료했습니다.', {
+                  position: 'top-center',
+                  autoClose: 2000,
+                  hideProgressBar: true,
+                  closeButton: false,
+                  theme: darkMode ? 'dark' : 'light',
+                  style: {
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    fontSize: '1.5rem',
+                    color: 'var(--color-primaryText)',
+                    borderRadius: '0.5rem',
+                  },
+                });
               })
               .catch((e) => console.log(e));
           }
@@ -146,17 +165,32 @@ const RegisterForm: FC = () => {
               deliveryFree: costCheck,
               deliveryCost: costCheck ? cost : null,
               deliveryCompany: company,
+              clear: false,
             })
             .then(() => {
               setLoading(false);
               methods.reset();
+              toast('등록을 완료했습니다.', {
+                position: 'top-center',
+                autoClose: 2000,
+                hideProgressBar: true,
+                closeButton: false,
+                theme: darkMode ? 'dark' : 'light',
+                style: {
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  fontSize: '1.5rem',
+                  color: 'var(--color-primaryText)',
+                  borderRadius: '0.5rem',
+                },
+              });
             })
             .catch((e) => console.log(e));
         } catch (e) {
           console.error(e);
         }
       },
-      [methods],
+      [darkMode, methods],
     ),
   );
   const option = methods.watch('option');
@@ -297,6 +331,7 @@ const RegisterForm: FC = () => {
           height="64px"
         />
       )}
+      <ToastContainer />
     </>
   );
 };
