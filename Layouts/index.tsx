@@ -8,7 +8,7 @@ const Layouts: FunctionComponent = ({ children }) => {
     <>
       <Header />
       <Space />
-      <main>{children}</main>
+      <Main>{children}</Main>
       <Footer />
     </>
   );
@@ -19,4 +19,8 @@ export default Layouts;
 const Space = styled.div`
   width: 100%;
   height: 76.5px;
+`;
+
+const Main = styled.main`
+  /* height: calc(100vh - 76.5px); */
 `;

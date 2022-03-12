@@ -7,6 +7,7 @@ import ThumbInput from './ThumbInput';
 import { ErrorMessage } from '@hookform/error-message';
 import {
   firebaseDb,
+  firebaseNow,
   firebaseStorage,
   uploadBytesResumable,
 } from '@/utils/firebase/clientApp';
@@ -128,6 +129,8 @@ const RegisterForm: FC = () => {
                 deliveryCost: costCheck ? cost : null,
                 deliveryCompany: company,
                 clear: false,
+                createAt: firebaseNow,
+                updateAt: firebaseNow,
               })
               .then(() => {
                 setLoading(false);
@@ -166,6 +169,8 @@ const RegisterForm: FC = () => {
               deliveryCost: costCheck ? cost : null,
               deliveryCompany: company,
               clear: false,
+              createAt: firebaseNow,
+              updateAt: firebaseNow,
             })
             .then(() => {
               setLoading(false);
@@ -292,9 +297,9 @@ const RegisterForm: FC = () => {
                   },
                 })}
               >
-                <option value="CLOTHES">CLOTHES</option>
-                <option value="ACC">ACC</option>
-                <option value="Food">Food</option>
+                <option value="CLOTHES">Clothes</option>
+                <option value="ACC">Acc</option>
+                <option value="FOOD">Food</option>
               </select>
               <ErrorMessage
                 errors={errors}

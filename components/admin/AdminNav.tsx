@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
 import { MdOutlineArrowDropDown } from 'react-icons/md';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 interface SelectProps {
   value: string;
@@ -49,6 +49,12 @@ const AdminNav = () => {
   });
   const [visible, setVisible] = useState(false);
   const router = useRouter();
+  const onPush = useCallback(
+    (query: string) => {
+      router.push(`edit?category=${query}`);
+    },
+    [router],
+  );
   return (
     <AdminNavContainer>
       {adminLink.map((link) => (
@@ -82,18 +88,23 @@ const AdminNav = () => {
             <MdOutlineArrowDropDown />
           </div>
           {visible && (
-            <div className="admin-nav-option">
-              {options.map((value) => (
-                <span
-                  onClick={() => {
-                    setSelect(value);
-                    setVisible(false);
-                  }}
-                  key={value.value}
-                >
-                  {value.label}
-                </span>
-              ))}
+            <div className="admin-nav-option-container">
+              <div className="aa">
+                <div className="admin-nav-option">
+                  {options.map((value) => (
+                    <span
+                      onClick={() => {
+                        onPush(value.value);
+                        setSelect(value);
+                        setVisible(false);
+                      }}
+                      key={value.value}
+                    >
+                      {value.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           )}
         </div>
@@ -154,11 +165,10 @@ const AdminNavContainer = styled.nav`
     }
     .admin-nav-option {
       position: absolute;
-      top: 35px;
       display: flex;
       flex-direction: column;
       width: 85px;
-      padding: 5px 0;
+      top: 35px;
       background: var(--color-subColor);
       box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
       border-radius: 4px;

@@ -6,10 +6,14 @@ import { useEffect } from 'react';
 import Layouts from 'Layouts';
 import AdminNav from '@/components/admin/AdminNav';
 import { RegisterResponsive } from './register';
+import EditProductList from '@/components/admin/Edit/EditProductList';
+import useSWR from 'swr';
+import { IProduct } from '@/types/product.type';
 
 const Edit = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const { data: products } = useSWR<IProduct[]>('/api/products/product');
   const router = useRouter();
   useEffect(() => {
     if (!user.isLoggedIn) {
@@ -23,7 +27,7 @@ const Edit = ({
     <Layouts>
       <RegisterResponsive>
         <AdminNav />
-        <h1>Edit page</h1>
+        {products ? <EditProductList products={products} /> : null}
       </RegisterResponsive>
     </Layouts>
   );
@@ -48,11 +52,15 @@ export const getServerSideProps = withIronSessionSsr(async function ({
   }
   if (user.email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
     return {
-      props: { user: { ...req.session.user, admin: true } },
+      props: {
+        user: { ...req.session.user, admin: true },
+      },
     };
   } else {
     return {
-      props: { user: { ...req.session.user, admin: false } },
+      props: {
+        user: { ...req.session.user, admin: false },
+      },
     };
   }
 },
