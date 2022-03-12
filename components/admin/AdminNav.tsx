@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
-import { MdOutlineArrowDropDown } from 'react-icons/md';
+import { MdOutlineArrowDropDown, MdDashboardCustomize } from 'react-icons/md';
 import { useCallback, useState } from 'react';
 
 interface SelectProps {
@@ -31,14 +31,22 @@ const options = [
 
 const adminLink = [
   {
+    id: '/admin/dashboard',
+    name: '대시보드',
+    path: '/admin/dashboard',
+    icon: <MdDashboardCustomize />,
+  },
+  {
     id: '/admin/register',
     name: '상품등록',
     path: '/admin/register',
+    icon: <AiFillFileAdd />,
   },
   {
     id: '/admin/edit',
     name: '상품수정',
     path: '/admin/edit',
+    icon: <AiFillEdit />,
   },
 ];
 
@@ -67,11 +75,12 @@ const AdminNav = () => {
             }
           >
             <div className="admin-nav-link">
-              {link.path === '/admin/register' ? (
+              {/* {link.path === '/admin/register' ? (
                 <AiFillFileAdd />
               ) : (
                 <AiFillEdit />
-              )}
+              )} */}
+              {link.icon}
               <a>{link.name}</a>
             </div>
             <div className="divider" />
