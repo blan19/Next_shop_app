@@ -118,6 +118,9 @@ const HeaderResponsive = styled(Responsive)`
   align-items: center;
   justify-content: space-between;
   padding: 20px 0;
+  @media screen and (max-width: 768px) {
+    padding: 20px 2.5rem;
+  }
   .left {
     h1 {
       cursor: pointer;

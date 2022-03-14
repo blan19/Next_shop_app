@@ -4,13 +4,14 @@ import React from 'react';
 import Layouts from '../Layouts';
 import Responsive from '@/utils/styles/Responsive';
 import TimeBoard from '@/components/Main/TimeBoard';
+import Main from '@/components/Main';
 
 const Index: NextPage = () => {
   return (
     <Layouts>
       <IndexResponsive>
         <TimeBoard />
-        <h1>Main Page..!</h1>
+        <Main />
       </IndexResponsive>
     </Layouts>
   );
