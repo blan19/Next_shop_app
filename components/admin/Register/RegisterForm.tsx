@@ -108,13 +108,14 @@ const RegisterForm: FC = () => {
           delivery: { costCheck, cost, company },
         } = data;
         setLoading(true);
+        const productUid = uid(24);
         try {
           const thumbUrl = await uploadTaskPromise('Thumbnail/', thumbnail);
           if (productInfo !== undefined) {
             const infoUrl = await uploadTaskPromise('Info/', productInfo);
             await firebaseDb
               .collection('products')
-              .doc(uid(24))
+              .doc(productUid)
               .set({
                 title,
                 price,
@@ -131,6 +132,7 @@ const RegisterForm: FC = () => {
                 clear: false,
                 createAt: firebaseNow,
                 updateAt: firebaseNow,
+                uid: productUid,
               })
               .then(() => {
                 setLoading(false);
@@ -154,7 +156,7 @@ const RegisterForm: FC = () => {
           }
           await firebaseDb
             .collection('products')
-            .doc(uid(24))
+            .doc(productUid)
             .set({
               title,
               price,
@@ -171,6 +173,7 @@ const RegisterForm: FC = () => {
               clear: false,
               createAt: firebaseNow,
               updateAt: firebaseNow,
+              uid: productUid,
             })
             .then(() => {
               setLoading(false);

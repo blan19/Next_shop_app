@@ -4,7 +4,7 @@ import Layouts from 'Layouts';
 import React from 'react';
 import { RegisterResponsive } from './register';
 
-const DashBoard = () => {
+const Receipt = () => {
   return (
     <Layouts>
       <RegisterResponsive>
@@ -15,4 +15,4 @@ const DashBoard = () => {
   );
 };
 
-export default DashBoard;
+export default Receipt;

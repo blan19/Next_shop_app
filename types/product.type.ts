@@ -27,4 +27,5 @@ export type IProduct = {
   thumbPath: string[];
   title: string;
   updateAt: Time;
+  uid: string;
 };

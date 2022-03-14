@@ -6,6 +6,7 @@ export const sessionOptions: IronSessionOptions = {
   cookieName: 'next-shop-app',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production',
+    maxAge: 60 * 60 * 24 * 1,
   },
 };
 

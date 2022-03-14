@@ -2,7 +2,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
-import { MdOutlineArrowDropDown, MdDashboardCustomize } from 'react-icons/md';
+import {
+  MdOutlineArrowDropDown,
+  MdDashboardCustomize,
+  MdOutlineReceiptLong,
+} from 'react-icons/md';
 import { useCallback, useState } from 'react';
 
 interface SelectProps {
@@ -47,6 +51,12 @@ const adminLink = [
     name: '상품수정',
     path: '/admin/edit',
     icon: <AiFillEdit />,
+  },
+  {
+    id: '/admin/receipt',
+    name: '상품수정',
+    path: '/admin/receipt',
+    icon: <MdOutlineReceiptLong />,
   },
 ];
 

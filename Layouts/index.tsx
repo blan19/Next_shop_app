@@ -22,5 +22,5 @@ const Space = styled.div`
 `;
 
 const Main = styled.main`
-  /* height: calc(100vh - 76.5px); */
+  margin-bottom: 5rem;
 `;

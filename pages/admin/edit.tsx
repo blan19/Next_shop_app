@@ -13,7 +13,9 @@ import { IProduct } from '@/types/product.type';
 const Edit = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data: products } = useSWR<IProduct[]>('/api/products/product');
+  const { data: products, mutate: mutateProducts } = useSWR<IProduct[]>(
+    '/api/products/product',
+  );
   const router = useRouter();
   useEffect(() => {
     if (!user.isLoggedIn) {
@@ -27,7 +29,9 @@ const Edit = ({
     <Layouts>
       <RegisterResponsive>
         <AdminNav />
-        {products ? <EditProductList products={products} /> : null}
+        {products ? (
+          <EditProductList mutate={mutateProducts} products={products} />
+        ) : null}
       </RegisterResponsive>
     </Layouts>
   );

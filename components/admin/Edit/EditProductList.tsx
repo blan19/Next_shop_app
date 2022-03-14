@@ -3,14 +3,17 @@ import useQueryParser from '@/hooks/useQueryParser';
 import { IProduct } from '@/types/product.type';
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { KeyedMutator } from 'swr';
 import EditProductItem from './EditProductItem';
 
 interface EditProductListProps {
   products: IProduct[];
+  mutate: KeyedMutator<IProduct[]>;
 }
 
 const EditProductList: FunctionComponent<EditProductListProps> = ({
   products,
+  mutate,
 }) => {
   const query = useQueryParser();
   const { containerRef, products: filteredProducts } = useInfiniteScroll(
@@ -21,9 +24,15 @@ const EditProductList: FunctionComponent<EditProductListProps> = ({
   return (
     <EditProductListContainer ref={containerRef}>
       {filteredProducts && filteredProducts.length > 0 ? (
-        filteredProducts.map((product) => (
-          <EditProductItem key={product.title} product={product} />
-        ))
+        <EditProductListGrid>
+          {filteredProducts.map((product) => (
+            <EditProductItem
+              key={product.title}
+              product={product}
+              mutate={mutate}
+            />
+          ))}
+        </EditProductListGrid>
       ) : (
         <EditProductListNoItem>
           <h1>No Product</h1>
@@ -37,6 +46,15 @@ const EditProductList: FunctionComponent<EditProductListProps> = ({
 export default EditProductList;
 
 const EditProductListContainer = styled.div``;
+
+const EditProductListGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+`;
 
 const EditProductListNoItem = styled.div`
   display: flex;
