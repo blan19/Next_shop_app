@@ -85,11 +85,6 @@ const AdminNav = () => {
             }
           >
             <div className="admin-nav-link">
-              {/* {link.path === '/admin/register' ? (
-                <AiFillFileAdd />
-              ) : (
-                <AiFillEdit />
-              )} */}
               {link.icon}
               <a>{link.name}</a>
             </div>

@@ -1,24 +1,22 @@
-import styled from 'styled-components';
+import Home from 'Layouts/Home';
 import { NextPage } from 'next';
-import React from 'react';
+import styled from 'styled-components';
 import Layouts from '../Layouts';
-import Responsive from '@/utils/styles/Responsive';
-import TimeBoard from '@/components/Main/TimeBoard';
-import Main from '@/components/Main';
 
 const Index: NextPage = () => {
   return (
     <Layouts>
-      <IndexResponsive>
-        <TimeBoard />
-        <Main />
-      </IndexResponsive>
+      <Home>
+        <IndextContainer>
+          <h1>asd</h1>
+        </IndextContainer>
+      </Home>
     </Layouts>
   );
 };
 
 export default Index;
 
-const IndexResponsive = styled(Responsive)`
-  margin-top: 3rem;
+const IndextContainer = styled.div`
+  /* flex: 1; */
 `;
