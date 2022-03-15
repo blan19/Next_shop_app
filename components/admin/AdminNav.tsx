@@ -54,7 +54,7 @@ const adminLink = [
   },
   {
     id: '/admin/receipt',
-    name: '상품수정',
+    name: '결제내역',
     path: '/admin/receipt',
     icon: <MdOutlineReceiptLong />,
   },

@@ -7,12 +7,14 @@ interface ThumbnailProps {
   images: string[];
   width: string;
   height: string;
+  radius?: boolean;
 }
 
 const Thumbnail: FunctionComponent<ThumbnailProps> = ({
   images,
   width,
   height,
+  radius,
 }) => {
   const swiperParams = useMemo<SwiperProps>(
     () => ({
@@ -25,7 +27,13 @@ const Thumbnail: FunctionComponent<ThumbnailProps> = ({
   return (
     <SwiperContainer className="thumbnail-swiper" {...swiperParams}>
       {images.map((image, idx) => (
-        <ThumbnailItem key={idx} image={image} width={width} height={height} />
+        <ThumbnailItem
+          key={idx}
+          image={image}
+          width={width}
+          height={height}
+          radius={radius}
+        />
       ))}
     </SwiperContainer>
   );

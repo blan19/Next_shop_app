@@ -56,7 +56,7 @@ const EditProductListGrid = styled.div`
   }
 `;
 
-const EditProductListNoItem = styled.div`
+export const EditProductListNoItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

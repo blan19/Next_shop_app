@@ -7,16 +7,24 @@ interface ThumbnailItemProps {
   image: string;
   width: string;
   height: string;
+  radius?: boolean;
 }
 
 const ThumbnailItem: FunctionComponent<ThumbnailItemProps> = ({
   image,
   width,
   height,
+  radius,
 }) => {
   return (
     <SwiperSlideContainer className="thumbnail-slide">
-      <Image src={image} width={width} height={height} alt="thumbnail" />
+      <Image
+        src={image}
+        width={width}
+        height={height}
+        alt="thumbnail"
+        className={radius ? 'thumb-radius' : ''}
+      />
     </SwiperSlideContainer>
   );
 };
@@ -28,5 +36,8 @@ const SwiperSlideContainer = styled(SwiperSlide)`
     width: 100%;
     height: 100%;
     border-radius: 0.5rem 0.5rem 0 0;
+  }
+  img.thumb-radius {
+    border-radius: 2rem 2rem 2rem 2rem;
   }
 `;

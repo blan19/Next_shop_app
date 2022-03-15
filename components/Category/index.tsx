@@ -1,5 +1,8 @@
-import { FunctionComponent, useMemo } from 'react';
+import { IProduct } from '@/types/product.type';
+import { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import useSWR from 'swr';
+import CategoryList from './CategoryList';
 
 interface CategoryListProps {
   category: string;
@@ -15,17 +18,21 @@ const CategoryListTitle: FunctionComponent<CategoryListProps> = ({
   );
 };
 
-const CategoryList: FunctionComponent<CategoryListProps> = ({ category }) => {
+const Category: FunctionComponent<CategoryListProps> = ({ category }) => {
+  const { data: products } = useSWR<IProduct[]>('/api/products/product');
   return (
-    <CategoryListContainer>
+    <CategoryContainer>
       <CategoryListTitle category={category} />
-    </CategoryListContainer>
+      {products && <CategoryList products={products} category={category} />}
+    </CategoryContainer>
   );
 };
 
-export default CategoryList;
+export default Category;
 
-const CategoryListContainer = styled.div``;
+const CategoryContainer = styled.div`
+  flex: 1;
+`;
 
 const CategoryListTitleContainer = styled.div`
   h1 {

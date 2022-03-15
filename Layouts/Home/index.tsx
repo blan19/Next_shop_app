@@ -22,6 +22,7 @@ const HomeContainer = styled(Responsive)`
   margin-top: 3rem;
   .home-contents-wrapper {
     display: flex;
+    align-items: flex-start;
     margin-top: 3rem;
   }
 `;
