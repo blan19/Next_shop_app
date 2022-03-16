@@ -1,7 +1,8 @@
 import { IProduct } from '@/types/product.type';
 import { flexCenter } from '@/utils/styles/Theme';
+import Link from 'next/link';
 import { FunctionComponent } from 'react';
-import { IoHeartOutline, IoHeart } from 'react-icons/io5';
+import { IoHeartOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 import Thumbnail from '../Common/Thumbnail';
 
@@ -11,21 +12,32 @@ interface CategoryItemProps {
 
 const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
   return (
-    <CategoryItemContainer>
-      <Thumbnail
-        images={product.thumbPath}
-        width="230px"
-        height="300px"
-        radius
-      />
-      <div className="category-item-info">
-        <h1>₩ {product.price}</h1>
-        <p>{product.title}</p>
-      </div>
-      <div className="category-item-like">
-        <IoHeartOutline />
-      </div>
-    </CategoryItemContainer>
+    <Link
+      href={{
+        pathname: '/products/[category]/[slug]',
+        query: {
+          category: `${product.category.toLowerCase()}`,
+          slug: `${product.title}`,
+        },
+      }}
+      passHref
+    >
+      <CategoryItemContainer>
+        <Thumbnail
+          images={product.thumbPath}
+          width="230px"
+          height="300px"
+          radius
+        />
+        <div className="category-item-info">
+          <h1>₩ {product.price}</h1>
+          <p>{product.title}</p>
+        </div>
+        <div className="category-item-like">
+          <IoHeartOutline />
+        </div>
+      </CategoryItemContainer>
+    </Link>
   );
 };
 

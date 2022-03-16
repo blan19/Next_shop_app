@@ -60,6 +60,13 @@ const NavBarNavigation = styled.nav`
   align-items: center;
   justify-content: center;
   margin-right: 3rem;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+    .home-nav-link {
+      margin-right: 1rem;
+    }
+  }
   .home-nav-link {
     display: flex;
     align-items: center;

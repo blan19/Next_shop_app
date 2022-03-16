@@ -24,5 +24,8 @@ const HomeContainer = styled(Responsive)`
     display: flex;
     align-items: flex-start;
     margin-top: 3rem;
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
   }
 `;

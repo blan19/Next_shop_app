@@ -51,7 +51,10 @@ const Header = () => {
                   )}
                 </li>
                 <li>
-                  <div className="header-hover-box header-like">
+                  <div
+                    className="header-hover-box header-like"
+                    onClick={() => router.push('/wishlist')}
+                  >
                     {visible ? (
                       <IoHeartSharp onMouseLeave={() => setVisible(false)} />
                     ) : (
@@ -60,13 +63,19 @@ const Header = () => {
                   </div>
                 </li>
                 <li>
-                  <div className="header-cart-box">
+                  <div
+                    className="header-cart-box"
+                    onClick={() => router.push('/payment/cart')}
+                  >
                     <IoCartSharp />
                   </div>
                 </li>
                 <li>
                   <div className="header-user">
-                    <div className="header-hover-box">
+                    <div
+                      className="header-hover-box"
+                      onClick={() => router.push('/profile')}
+                    >
                       <IoPerson />
                     </div>
                     <div className="header-hover-box header-logout-box">
