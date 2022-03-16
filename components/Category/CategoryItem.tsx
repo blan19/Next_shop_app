@@ -1,8 +1,9 @@
+import useLocalStorage from '@/hooks/useLocalStorage';
 import { IProduct } from '@/types/product.type';
 import { flexCenter } from '@/utils/styles/Theme';
 import Link from 'next/link';
 import { FunctionComponent } from 'react';
-import { IoHeartOutline } from 'react-icons/io5';
+import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import styled from 'styled-components';
 import Thumbnail from '../Common/Thumbnail';
 
@@ -11,33 +12,45 @@ interface CategoryItemProps {
 }
 
 const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
+  const [wish, setWish] = useLocalStorage<IProduct[]>('wish', []);
   return (
-    <Link
-      href={{
-        pathname: '/products/[category]/[slug]',
-        query: {
-          category: `${product.category.toLowerCase()}`,
-          slug: `${product.title}`,
-        },
-      }}
-      passHref
-    >
-      <CategoryItemContainer>
-        <Thumbnail
-          images={product.thumbPath}
-          width="230px"
-          height="300px"
-          radius
-        />
+    <CategoryItemContainer>
+      <Thumbnail
+        images={product.thumbPath}
+        width="230px"
+        height="300px"
+        radius
+      />
+      <Link
+        href={{
+          pathname: '/products/[category]/[slug]',
+          query: {
+            category: `${product.category.toLowerCase()}`,
+            slug: `${product.title}`,
+          },
+        }}
+        passHref
+      >
         <div className="category-item-info">
           <h1>₩ {product.price}</h1>
           <p>{product.title}</p>
         </div>
-        <div className="category-item-like">
-          <IoHeartOutline />
-        </div>
-      </CategoryItemContainer>
-    </Link>
+      </Link>
+      <div className="category-item-like">
+        {wish.some((item) => item.uid === product.uid) ? (
+          <IoHeart
+            className="category-item-selected"
+            onClick={() =>
+              setWish((prev) => prev.filter((item) => item.uid !== product.uid))
+            }
+          />
+        ) : (
+          <IoHeartOutline
+            onClick={() => setWish((prev) => prev.concat(product))}
+          />
+        )}
+      </div>
+    </CategoryItemContainer>
   );
 };
 
@@ -45,8 +58,8 @@ export default CategoryItem;
 
 const CategoryItemContainer = styled.div`
   position: relative;
-  cursor: pointer;
   .category-item-info {
+    cursor: pointer;
     h1 {
       margin-top: 2rem;
       font-size: 1.75rem;
@@ -70,7 +83,11 @@ const CategoryItemContainer = styled.div`
     right: 7.5rem;
     z-index: 99;
     svg {
+      cursor: pointer;
       font-size: 3rem;
+    }
+    svg.category-item-selected {
+      color: red;
     }
     @media screen and (max-width: 1280px) {
       right: 8.5rem;
@@ -104,8 +121,6 @@ const CategoryItemContainer = styled.div`
       svg {
         font-size: 1.5rem;
       }
-    }
-    @media screen and (max-width: 300px) {
     }
   }
 `;

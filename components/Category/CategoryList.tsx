@@ -1,6 +1,6 @@
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 import { IProduct } from '@/types/product.type';
-import { FunctionComponent, useEffect } from 'react';
+import { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { EditProductListNoItem } from '../admin/Edit/EditProductList';
 import CategoryItem from './CategoryItem';
@@ -18,11 +18,6 @@ const CategoryList: FunctionComponent<CategoryListProps> = ({
     category,
     products,
   );
-
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
-
   return (
     <CategoryListContainer>
       {categories.length > 0 ? (
