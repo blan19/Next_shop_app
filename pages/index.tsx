@@ -17,6 +17,4 @@ const Index: NextPage = () => {
 
 export default Index;
 
-const IndextContainer = styled.div`
-  /* flex: 1; */
-`;
+const IndextContainer = styled.div``;
