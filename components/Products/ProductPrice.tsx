@@ -10,6 +10,12 @@ const ProductPrice: FunctionComponent<ProductPriceProps> = ({ price }) => {
     <ProductsLabel>
       <h1 className="products-label">Price Info</h1>
       <div className="products-divide" />
+      <div className="products-contents">
+        <div className="products-contents-wrapper">
+          <span>판매 가격</span>
+        </div>
+        <p>{price}₩</p>
+      </div>
     </ProductsLabel>
   );
 };

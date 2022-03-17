@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Thumbnail from '../Common/Thumbnail';
 import ProductPrice from './ProductPrice';
 import ProductsDelivery from './ProductsDelivery';
+import ProductsOption from './ProductsOption';
+import ProductsSize from './ProductsSize';
 
 interface ProductsProps {
   product: IProduct;
@@ -36,6 +38,11 @@ const Products: FunctionComponent<ProductsProps> = ({ product }) => {
             cost={product.deliveryCost}
             free={product.deliveryFree}
           />
+          <ProductsOption
+            option={product.option}
+            optionInfo={product.optionInfo}
+          />
+          <ProductsSize size={product.size} sizeInfo={product.sizeInfo} />
           <ProductPrice price={product.price} />
         </div>
       </div>
@@ -84,5 +91,42 @@ export const ProductsLabel = styled.label`
     width: 100%;
     height: 1.5px;
     background: var(--color-subColor);
+  }
+  .products-contents {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    margin: 1.5rem 0;
+    .products-contents-wrapper {
+      width: 7.5rem;
+      span {
+        color: var(--color-primaryText);
+      }
+    }
+    p {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--color-primaryText);
+    }
+    b {
+      color: var(--color-primaryText);
+    }
+  }
+  .products-size-table {
+    margin-bottom: 1.5rem;
+    /* border: 1px solid var(--color-subText); */
+    border-spacing: 0;
+    font-size: 1.75rem;
+    text-align: center;
+    th {
+      padding: 1rem;
+      color: var(--color-primaryText);
+      background: var(--color-subColor);
+      border: 0.15px solid var(--color-subText);
+    }
+    td {
+      color: var(--color-primaryText);
+      border: 0.5px solid var(--color-subText);
+    }
   }
 `;
