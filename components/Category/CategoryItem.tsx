@@ -1,10 +1,13 @@
 import useLocalStorage from '@/hooks/useLocalStorage';
+import useUser from '@/hooks/useUser';
 import { IProduct } from '@/types/product.type';
 import { flexCenter } from '@/utils/styles/Theme';
 import Link from 'next/link';
-import { FunctionComponent } from 'react';
+import { useRouter } from 'next/router';
+import { FunctionComponent, useState } from 'react';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import styled from 'styled-components';
+import Modal from '../Common/Modal';
 import Thumbnail from '../Common/Thumbnail';
 
 interface CategoryItemProps {
@@ -12,7 +15,10 @@ interface CategoryItemProps {
 }
 
 const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
+  const { user } = useUser();
+  const router = useRouter();
   const [wish, setWish] = useLocalStorage<IProduct[]>('wish', []);
+  const [visible, setVisible] = useState(false);
   return (
     <CategoryItemContainer>
       <Thumbnail
@@ -21,16 +27,7 @@ const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
         height="300px"
         radius
       />
-      <Link
-        href={{
-          pathname: '/products/[category]/[slug]',
-          query: {
-            category: `${product.category.toLowerCase()}`,
-            slug: `${product.title}`,
-          },
-        }}
-        passHref
-      >
+      <Link href={`/products/${product.uid}/${product.title}`} passHref>
         <div className="category-item-info">
           <h1>₩ {product.price}</h1>
           <p>{product.title}</p>
@@ -40,16 +37,42 @@ const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
         {wish.some((item) => item.uid === product.uid) ? (
           <IoHeart
             className="category-item-selected"
-            onClick={() =>
-              setWish((prev) => prev.filter((item) => item.uid !== product.uid))
-            }
+            onClick={() => {
+              if (!user?.isLoggedIn) {
+                setVisible(true);
+                return;
+              }
+              setWish((prev) =>
+                prev.filter((item) => item.uid !== product.uid),
+              );
+            }}
           />
         ) : (
           <IoHeartOutline
-            onClick={() => setWish((prev) => prev.concat(product))}
+            onClick={() => {
+              if (!user?.isLoggedIn) {
+                setVisible(true);
+                return;
+              }
+              setWish((prev) => prev.concat(product));
+            }}
           />
         )}
       </div>
+      <Modal visible={visible} setVisible={setVisible}>
+        <h1>로그인이 필요합니다</h1>
+        <div className="modal-button">
+          <button
+            onClick={() => {
+              setVisible((prev) => !prev);
+              router.push('/auth/login');
+            }}
+          >
+            로그인
+          </button>
+          <button onClick={() => setVisible((prev) => !prev)}>돌아가기</button>
+        </div>
+      </Modal>
     </CategoryItemContainer>
   );
 };

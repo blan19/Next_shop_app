@@ -9,7 +9,7 @@ const Layouts: FunctionComponent = ({ children }) => {
       <Header />
       <Space />
       <Main>{children}</Main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

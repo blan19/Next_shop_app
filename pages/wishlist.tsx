@@ -24,7 +24,7 @@ const WishListResponsive = styled(Responsive)`
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 3rem;
+    margin-bottom: 5rem;
     h1 {
       position: relative;
       font-size: 4rem;
