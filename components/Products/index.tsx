@@ -89,7 +89,7 @@ export const ProductsLabel = styled.label`
   }
   .products-divide {
     width: 100%;
-    height: 1.5px;
+    height: 1px;
     background: var(--color-subColor);
   }
   .products-contents {
@@ -114,18 +114,19 @@ export const ProductsLabel = styled.label`
   }
   .products-size-table {
     margin-bottom: 1.5rem;
-    /* border: 1px solid var(--color-subText); */
     border-spacing: 0;
-    font-size: 1.75rem;
     text-align: center;
     th {
-      padding: 1rem;
+      font-size: 1.5rem;
+      padding: 0.65rem;
       color: var(--color-primaryText);
       background: var(--color-subColor);
       border: 0.15px solid var(--color-subText);
+      font-weight: 400;
     }
     td {
-      color: var(--color-primaryText);
+      font-size: 1.25rem;
+      color: var(--color-subText);
       border: 0.5px solid var(--color-subText);
     }
   }
