@@ -31,7 +31,12 @@ const WishListProductItem: FunctionComponent<WishListProductItemProps> = ({
         className="wish-item-info"
         onCanPlay={() => router.push(`/products/${wish.uid}/${wish.title}`)}
       >
-        <h1>₩ {wish.price}</h1>
+        <h1>
+          ₩{' '}
+          {Number(wish.price).toLocaleString('ko-Kr', {
+            maximumFractionDigits: 4,
+          })}
+        </h1>
         <p>{wish.title}</p>
       </div>
       <div className="wish-item-category">

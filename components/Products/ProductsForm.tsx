@@ -246,8 +246,10 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
         <div className="products-cart-total-price">
           <h1>총 상품 금액</h1>
           <h1>
-            {cart.reduce((acc, cur) => acc + cur.count, 0) *
-              Number(product.price)}
+            {Number(
+              cart.reduce((acc, cur) => acc + cur.count, 0) *
+                Number(product.price),
+            ).toLocaleString('ko-KR', { maximumFractionDigits: 4 })}
             ₩
           </h1>
         </div>

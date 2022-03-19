@@ -14,7 +14,9 @@ const ProductPrice: FunctionComponent<ProductPriceProps> = ({ price }) => {
         <div className="products-contents-wrapper">
           <span>판매 가격</span>
         </div>
-        <p>{price}₩</p>
+        <p>
+          {Number(price).toLocaleString('ko-KR', { maximumFractionDigits: 4 })}₩
+        </p>
       </div>
     </ProductsLabel>
   );

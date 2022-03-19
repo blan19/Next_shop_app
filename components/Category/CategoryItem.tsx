@@ -29,7 +29,12 @@ const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
       />
       <Link href={`/products/${product.uid}/${product.title}`} passHref>
         <div className="category-item-info">
-          <h1>₩ {product.price}</h1>
+          <h1>
+            ₩{' '}
+            {Number(product.price).toLocaleString('ko-KR', {
+              maximumFractionDigits: 4,
+            })}
+          </h1>
           <p>{product.title}</p>
         </div>
       </Link>
