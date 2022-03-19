@@ -1,9 +1,11 @@
 import { IProduct } from '@/types/product.type';
-import { FunctionComponent } from 'react';
+import { flexCenter } from '@/utils/styles/Theme';
+import { FunctionComponent, useMemo } from 'react';
 import styled from 'styled-components';
 import Thumbnail from '../Common/Thumbnail';
 import ProductPrice from './ProductPrice';
 import ProductsDelivery from './ProductsDelivery';
+import ProductsForm from './ProductsForm';
 import ProductsOption from './ProductsOption';
 import ProductsSize from './ProductsSize';
 
@@ -12,8 +14,43 @@ interface ProductsProps {
 }
 
 const Products: FunctionComponent<ProductsProps> = ({ product }) => {
-  console.log(product);
-
+  const options = useMemo(() => {
+    if (product.size && product.option) {
+      if (product.sizeInfo && product.optionInfo) {
+        return [
+          product.optionInfo.map((info) => ({
+            value: info.contents,
+            label: info.contents,
+          })),
+          product.sizeInfo.map((info) => ({
+            value: info.size,
+            label: info.size,
+          })),
+        ];
+      }
+    }
+    if (product.size) {
+      if (product.sizeInfo) {
+        return [
+          product.sizeInfo.map((info) => ({
+            value: info.size,
+            label: info.size,
+          })),
+        ];
+      }
+    }
+    if (product.option) {
+      if (product.optionInfo) {
+        return [
+          product.optionInfo.map((info) => ({
+            value: info.contents,
+            label: info.contents,
+          })),
+        ];
+      }
+    }
+    return null;
+  }, [product]);
   return (
     <ProductsContainer>
       <div className="products-title">
@@ -25,25 +62,25 @@ const Products: FunctionComponent<ProductsProps> = ({ product }) => {
       </div>
       <div className="products-to">
         <div className="products-to-left">
-          <Thumbnail
-            images={product.thumbPath}
-            width="350px"
-            height="450px"
-            radius
-          />
+          <Thumbnail images={product.thumbPath} width="400px" height="500px" />
         </div>
         <div className="products-to-right">
-          <ProductsDelivery
-            company={product.deliveryCompany}
-            cost={product.deliveryCost}
-            free={product.deliveryFree}
-          />
-          <ProductsOption
-            option={product.option}
-            optionInfo={product.optionInfo}
-          />
-          <ProductsSize size={product.size} sizeInfo={product.sizeInfo} />
-          <ProductPrice price={product.price} />
+          <div className="products-to-right-info">
+            <ProductsDelivery
+              company={product.deliveryCompany}
+              cost={product.deliveryCost}
+              free={product.deliveryFree}
+            />
+            <ProductsOption
+              option={product.option}
+              optionInfo={product.optionInfo}
+            />
+            <ProductsSize size={product.size} sizeInfo={product.sizeInfo} />
+            <ProductPrice price={product.price} />
+          </div>
+          <div className="products-to-right-payment">
+            <ProductsForm options={options} product={product} />
+          </div>
         </div>
       </div>
     </ProductsContainer>
@@ -73,9 +110,29 @@ const ProductsContainer = styled.div`
   }
   .products-to {
     display: flex;
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+    }
+    .products-to-left {
+      ${flexCenter}
+      padding: 2.5rem;
+      border: 1px solid var(--color-subColor);
+    }
     .products-to-right {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       margin-left: 4rem;
+      @media screen and (max-width: 768px) {
+        flex-direction: column-reverse;
+        margin-left: 0;
+      }
+      .products-to-right-info {
+        margin-top: 2rem;
+      }
+      .products-to-right-payment {
+        margin-top: 2rem;
+      }
     }
   }
 `;

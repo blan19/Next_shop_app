@@ -27,7 +27,7 @@ export default Product;
 export const getStaticPaths: GetStaticPaths = async () => {
   const products: IProduct[] = await fetch(
     process.env.NODE_ENV === 'production'
-      ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/product`
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/product`
       : 'http://localhost:3000/api/products/product',
   ).then((res) => res.json());
 
@@ -46,7 +46,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
   const product: IProduct = await fetch(
     process.env.NODE_ENV === 'production'
-      ? `${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/read`
+      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/read`
       : 'http://localhost:3000/api/products/read',
     {
       method: 'POST',

@@ -37,6 +37,7 @@ export default createGlobalStyle`
     --color-mainColor: #F5B3D5;
     --color-subColor: #292A2D;
     --color-hoverColor: #474C50;
+    --color-lightColor: #f3f3f3;
   }
   body.light-mode {
     background: #fff;
@@ -47,6 +48,7 @@ export default createGlobalStyle`
     --color-mainColor: #F5B3D5;
     --color-subColor: #E1E1E1;
     --color-hoverColor: #efefef;
+    --color-lightColor: #f3f3f3;
   }
   * {
     margin: 0;
