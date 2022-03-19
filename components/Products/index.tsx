@@ -3,6 +3,7 @@ import { flexCenter } from '@/utils/styles/Theme';
 import { FunctionComponent, useMemo } from 'react';
 import styled from 'styled-components';
 import Thumbnail from '../Common/Thumbnail';
+import ProductInfo from './ProductInfo';
 import ProductPrice from './ProductPrice';
 import ProductsDelivery from './ProductsDelivery';
 import ProductsForm from './ProductsForm';
@@ -14,6 +15,8 @@ interface ProductsProps {
 }
 
 const Products: FunctionComponent<ProductsProps> = ({ product }) => {
+  console.log(product);
+
   const options = useMemo(() => {
     if (product.size && product.option) {
       if (product.sizeInfo && product.optionInfo) {
@@ -75,7 +78,7 @@ const Products: FunctionComponent<ProductsProps> = ({ product }) => {
               option={product.option}
               optionInfo={product.optionInfo}
             />
-            <ProductsSize size={product.size} sizeInfo={product.sizeInfo} />
+            {/* <ProductsSize size={product.size} sizeInfo={product.sizeInfo} /> */}
             <ProductPrice price={product.price} />
           </div>
           <div className="products-to-right-payment">
@@ -83,6 +86,7 @@ const Products: FunctionComponent<ProductsProps> = ({ product }) => {
           </div>
         </div>
       </div>
+      <ProductInfo infoPath={product.infoPath} />
     </ProductsContainer>
   );
 };
@@ -110,7 +114,9 @@ const ProductsContainer = styled.div`
   }
   .products-to {
     display: flex;
+    align-items: flex-start;
     @media screen and (max-width: 768px) {
+      align-items: initial;
       flex-direction: column;
     }
     .products-to-left {
@@ -161,8 +167,8 @@ export const ProductsLabel = styled.label`
       }
     }
     p {
-      font-size: 3rem;
-      font-weight: bold;
+      font-size: 2.5rem;
+      font-weight: 400;
       color: var(--color-primaryText);
     }
     b {
