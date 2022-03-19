@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Select, { StylesConfig } from 'react-select';
 import { flexCenter } from '@/utils/styles/Theme';
 import { IProduct } from '@/types/product.type';
+import ProductButton from './ProductButton';
 
 interface ProductsFormProps {
   options: { value: string; label: string }[][] | null;
@@ -250,6 +251,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
             ₩
           </h1>
         </div>
+        <ProductButton product={product} cart={cart} />
       </ProductsFormContainer>
     </FormProvider>
   );
@@ -259,7 +261,9 @@ export default ProductsForm;
 
 const ProductsFormContainer = styled.form`
   .products-form-button-box {
-    ${flexCenter}
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
   .products-cart-container {
     display: flex;
