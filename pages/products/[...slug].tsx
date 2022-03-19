@@ -29,6 +29,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
     process.env.NODE_ENV === 'production'
       ? `https://${process.env.VERCEL_URL}/api/products/product`
       : 'http://localhost:3000/api/products/product',
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': '*',
+      },
+    },
   ).then((res) => res.json());
 
   const paths = products.map((product) => ({
@@ -51,7 +58,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json;charset=utf-8',
+        'Content-Type': 'application/json',
+        'User-Agent': '*',
       },
       body: JSON.stringify(body),
     },
