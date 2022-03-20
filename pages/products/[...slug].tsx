@@ -1,5 +1,6 @@
 import Products from '@/components/Products';
 import { IProduct } from '@/types/product.type';
+import { firebaseDb } from '@/utils/firebase/clientApp';
 import Responsive from '@/utils/styles/Responsive';
 import Layouts from 'Layouts';
 import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
@@ -25,43 +26,26 @@ const Product = ({
 export default Product;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const products: IProduct[] = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/products/product`,
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': '*',
+  try {
+    const snapsoht = await firebaseDb.collection('products').get();
+    const res = snapsoht.docs.map((doc) => doc.data());
+    const products: IProduct[] = JSON.parse(JSON.stringify(res));
+    const paths = products.map((product) => ({
+      params: {
+        slug: [product.uid, product.title],
       },
-    },
-  ).then((res) => res.json());
-
-  const paths = products.map((product) => ({
-    params: {
-      slug: [product.uid, product.title],
-    },
-  }));
-  return { paths, fallback: false };
+    }));
+    return { paths, fallback: false };
+  } catch (e) {
+    throw e;
+  }
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { slug } = params as IParams;
-  const body = {
-    uid: slug[0],
-  };
   try {
-    const product: IProduct = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/products/read`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json; charset=UTF-8',
-          'User-Agent': '*',
-        },
-        body: JSON.stringify(body),
-      },
-    ).then((res) => res.json());
+    const snapshot = await firebaseDb.collection('products').doc(slug[0]).get();
+    const product: IProduct = JSON.parse(JSON.stringify(snapshot.data()));
     return {
       props: {
         product,
