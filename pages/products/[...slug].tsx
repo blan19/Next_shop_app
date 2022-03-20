@@ -25,26 +25,31 @@ const Product = ({
 export default Product;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const products: IProduct[] = await fetch(
-    process.env.NODE_ENV === 'production'
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/product`
-      : 'http://localhost:3000/api/products/product',
-    {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
+  try {
+    const res = await fetch(
+      process.env.NODE_ENV === 'production'
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/product`
+        : 'http://localhost:3000/api/products/product',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json; charset=UTF-8',
+          'User-Agent': '*',
+        },
       },
-    },
-  ).then((res) => res.json());
+    );
+    const products: IProduct[] = await res.json();
 
-  const paths = products.map((product) => ({
-    params: {
-      slug: [product.uid, product.title],
-    },
-  }));
-  return { paths, fallback: false };
+    const paths = products.map((product) => ({
+      params: {
+        slug: [product.uid, product.title],
+      },
+    }));
+    return { paths, fallback: false };
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -52,25 +57,30 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const body = {
     uid: slug[0],
   };
-  const product: IProduct = await fetch(
-    process.env.NODE_ENV === 'production'
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/read`
-      : 'http://localhost:3000/api/products/read',
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json, text/plain, */*',
-        'User-Agent': '*',
+  try {
+    const res = await fetch(
+      process.env.NODE_ENV === 'production'
+        ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/products/read`
+        : 'http://localhost:3000/api/products/read',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json; charset=UTF-8',
+          'User-Agent': '*',
+        },
+        body: JSON.stringify(body),
       },
-      body: JSON.stringify(body),
-    },
-  ).then((res) => res.json());
-  return {
-    props: {
-      product,
-    },
-  };
+    );
+    const product: IProduct = await res.json();
+    return {
+      props: {
+        product,
+      },
+    };
+  } catch (e) {
+    throw e;
+  }
 };
 
 const ProductResponsive = styled(Responsive)`
