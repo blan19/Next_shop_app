@@ -166,10 +166,10 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
                 <div className="products-cart-button">
                   <button
                     type="button"
-                    disabled={item.count === 1 ? true : false}
+                    disabled={item.count <= 1 ? true : false}
                     onClick={() =>
-                      setCart((prev) =>
-                        prev.map((editItem) =>
+                      setCart(
+                        cart.filter((editItem) =>
                           editItem.option?.join('') === item.option?.join('')
                             ? {
                                 ...editItem,
@@ -186,8 +186,8 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
                   <button
                     type="button"
                     onClick={() =>
-                      setCart((prev) =>
-                        prev.map((editItem) =>
+                      setCart(
+                        cart.filter((editItem) =>
                           editItem.option?.join('') === item.option?.join('')
                             ? {
                                 ...editItem,
@@ -205,10 +205,10 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
                 <div className="products-cart-button">
                   <button
                     type="button"
-                    disabled={item.count === 1 ? true : false}
+                    disabled={item.count <= 1 ? true : false}
                     onClick={() =>
-                      setCart((prev) =>
-                        prev.map((editItem) =>
+                      setCart(
+                        cart.filter((editItem) =>
                           editItem.title === item.title
                             ? {
                                 ...editItem,
@@ -225,8 +225,8 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
                   <button
                     type="button"
                     onClick={() =>
-                      setCart((prev) =>
-                        prev.map((editItem) =>
+                      setCart(
+                        cart.filter((editItem) =>
                           editItem.title === item.title
                             ? {
                                 ...editItem,
