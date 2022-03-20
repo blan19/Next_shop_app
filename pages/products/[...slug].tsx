@@ -25,29 +25,23 @@ const Product = ({
 export default Product;
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/products/product`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json; charset=UTF-8',
-          'User-Agent': '*',
-        },
+  const products: IProduct[] = await fetch(
+    `${process.env.NEXT_PUBLIC_URL}/api/products/product`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': '*',
       },
-    );
-    const products: IProduct[] = await res.json();
+    },
+  ).then((res) => res.json());
 
-    const paths = products.map((product) => ({
-      params: {
-        slug: [product.uid, product.title],
-      },
-    }));
-    return { paths, fallback: false };
-  } catch (error) {
-    throw error;
-  }
+  const paths = products.map((product) => ({
+    params: {
+      slug: [product.uid, product.title],
+    },
+  }));
+  return { paths, fallback: false };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
@@ -56,8 +50,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     uid: slug[0],
   };
   try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_URL}/api/products/product`,
+    const product: IProduct = await fetch(
+      `${process.env.NEXT_PUBLIC_URL}/api/products/read`,
       {
         method: 'POST',
         headers: {
@@ -67,8 +61,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
         },
         body: JSON.stringify(body),
       },
-    );
-    const product: IProduct = await res.json();
+    ).then((res) => res.json());
     return {
       props: {
         product,
