@@ -33,6 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json, text/plain, */*',
         'User-Agent': '*',
       },
     },
@@ -59,6 +60,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Accept: 'application/json, text/plain, */*',
         'User-Agent': '*',
       },
       body: JSON.stringify(body),
