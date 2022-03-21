@@ -25,22 +25,6 @@ const Product = ({
 
 export default Product;
 
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { params } = ctx;
-//   const { slug } = params as IParams;
-//   try {
-//     const snapshot = await firebaseDb.collection('products').doc(slug[0]).get();
-//     const product: IProduct = JSON.parse(JSON.stringify(snapshot.data()));
-//     return {
-//       props: {
-//         product,
-//       },
-//     };
-//   } catch (e) {
-//     throw e;
-//   }
-// };
-
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const snapsoht = await firebaseDb.collection('products').get();
