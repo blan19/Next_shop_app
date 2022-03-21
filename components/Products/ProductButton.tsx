@@ -1,5 +1,5 @@
 import { IProduct } from '@/types/product.type';
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { flexCenter } from '@/utils/styles/Theme';
@@ -7,7 +7,7 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import useUser from '@/hooks/useUser';
 import { useRouter } from 'next/router';
 import Modal from '../Common/Modal';
-import { firebaseDb } from '@/utils/firebase/clientApp';
+import fetchJson from '@/utils/lib/fetchJson';
 
 interface ProductButtonProps {
   cart:
@@ -28,21 +28,40 @@ const ProductButton: FunctionComponent<ProductButtonProps> = ({
   const { user } = useUser();
   const [wish, setWish] = useLocalStorage<IProduct[]>('wish', []);
   const [visible, setVisible] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
 
-  const getCart = useCallback(async () => {
-    const snapshot = await firebaseDb.collection('cart').get();
-    const products = snapshot.docs.map((doc) => doc.data());
-    console.log(products);
-  }, []);
-
-  useEffect(() => {
-    getCart();
-  }, [getCart]);
+  const onClickMoveCart = useCallback(async () => {
+    if (cart) {
+      if (product.option) {
+        await fetchJson('/api/cart/create', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            products: cart,
+            userUid: user?.uid,
+          }),
+        }).then(() => console.log('카트 목록 업데이트'));
+      } else {
+      }
+    } else {
+      setError('❌  주문 목록이 존재하지 않습니다.');
+    }
+  }, [cart, product.option, user?.uid]);
 
   return (
     <ProductButtonContainer>
-      <button type="button" className="products-button-payment">
+      <button
+        type="button"
+        className="products-button-payment"
+        onClick={() => {
+          if (!user?.isLoggedIn) {
+            setVisible(true);
+            return;
+          }
+          onClickMoveCart();
+        }}
+      >
         구매하기
       </button>
       <button type="button" className="products-button-wish">

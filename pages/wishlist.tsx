@@ -6,21 +6,21 @@ import styled from 'styled-components';
 const WishList = () => {
   return (
     <Layouts>
-      <WishListResponsive>
-        <div className="wish-info">
+      <ListResponsive>
+        <div className="list-info">
           <h1>위시리스트</h1>
         </div>
         <WishListProduct />
-      </WishListResponsive>
+      </ListResponsive>
     </Layouts>
   );
 };
 
 export default WishList;
 
-const WishListResponsive = styled(Responsive)`
+export const ListResponsive = styled(Responsive)`
   margin-top: 3rem;
-  .wish-info {
+  .list-info {
     display: flex;
     justify-content: flex-start;
     align-items: center;

@@ -15,8 +15,6 @@ interface ProductsProps {
 }
 
 const Products: FunctionComponent<ProductsProps> = ({ product }) => {
-  console.log(product);
-
   const options = useMemo(() => {
     if (product.size && product.option) {
       if (product.sizeInfo && product.optionInfo) {
