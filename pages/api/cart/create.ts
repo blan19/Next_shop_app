@@ -1,7 +1,6 @@
 import { ICart } from '@/types/cart.type';
 import { firebaseDb, firebaseNow } from '@/utils/firebase/clientApp';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { uid } from 'uid';
 
 interface BodyType {
   products: ICart[];
@@ -42,6 +41,6 @@ export default async function createCart(
     }
     res.status(200).json({ success: true });
   } catch (error) {
-    res.status(500).json(error);
+    res.status(500).json(JSON.stringify(error));
   }
 }

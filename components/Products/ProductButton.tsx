@@ -41,7 +41,9 @@ const ProductButton: FunctionComponent<ProductButtonProps> = ({
             products: cart,
             userUid: user?.uid,
           }),
-        }).then(() => console.log('카트 목록 업데이트'));
+        })
+          .then(() => console.log('카트 목록 업데이트'))
+          .catch((error) => setError(error));
       } else {
       }
     } else {
