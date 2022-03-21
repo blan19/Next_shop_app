@@ -322,6 +322,7 @@ const ProductsFormButton = styled.button`
   background: var(--color-mainColor);
   color: var(--color-rPrimaryText);
   font-weight: bold;
+  font-size: 1.5rem;
   padding: 1rem 3rem;
   border-radius: 0.5rem;
   cursor: pointer;

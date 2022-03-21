@@ -292,6 +292,7 @@ const AuthFormResponsive = styled(Responsive)`
     align-items: center;
     justify-content: flex-end;
     p {
+      font-size: 1.25rem;
       color: var(--color-subText);
       span {
         cursor: pointer;

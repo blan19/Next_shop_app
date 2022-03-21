@@ -18,6 +18,7 @@ const RegisterDelivery = () => {
           <span>택배비 </span>
           <input
             type="number"
+            onWheelCapture={(e) => e.currentTarget.blur()}
             {...register('delivery.cost', {
               required: cost
                 ? { value: true, message: '택배비용을 입력해주세요' }

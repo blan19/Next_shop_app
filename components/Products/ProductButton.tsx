@@ -1,5 +1,5 @@
 import { IProduct } from '@/types/product.type';
-import { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
 import { flexCenter } from '@/utils/styles/Theme';
@@ -7,6 +7,7 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import useUser from '@/hooks/useUser';
 import { useRouter } from 'next/router';
 import Modal from '../Common/Modal';
+import { firebaseDb } from '@/utils/firebase/clientApp';
 
 interface ProductButtonProps {
   cart:
@@ -28,6 +29,17 @@ const ProductButton: FunctionComponent<ProductButtonProps> = ({
   const [wish, setWish] = useLocalStorage<IProduct[]>('wish', []);
   const [visible, setVisible] = useState(false);
   const router = useRouter();
+
+  const getCart = useCallback(async () => {
+    const snapshot = await firebaseDb.collection('cart').get();
+    const products = snapshot.docs.map((doc) => doc.data());
+    console.log(products);
+  }, []);
+
+  useEffect(() => {
+    getCart();
+  }, [getCart]);
+
   return (
     <ProductButtonContainer>
       <button type="button" className="products-button-payment">

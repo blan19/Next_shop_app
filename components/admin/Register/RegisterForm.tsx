@@ -263,6 +263,7 @@ const RegisterForm: FC = () => {
                   },
                 })}
                 type="number"
+                onWheelCapture={(e) => e.currentTarget.blur()}
               />
               <ErrorMessage
                 errors={errors}

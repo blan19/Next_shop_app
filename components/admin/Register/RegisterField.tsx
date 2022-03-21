@@ -89,6 +89,8 @@ const RegisterField: FC<RegisterFieldProps> = ({ name, mode }) => {
                 <span>총장 </span>
                 <RegisterFieldOptionInput
                   type="number"
+                  step="0.1"
+                  onWheelCapture={(e) => e.currentTarget.blur()}
                   {...register(`${name}.${idx}.detail_1`, {
                     required: size
                       ? { value: true, message: '총장을 입력해주세요.' }
@@ -107,6 +109,8 @@ const RegisterField: FC<RegisterFieldProps> = ({ name, mode }) => {
                 <span>어깨너비 </span>
                 <RegisterFieldOptionInput
                   type="number"
+                  step="0.1"
+                  onWheelCapture={(e) => e.currentTarget.blur()}
                   {...register(`${name}.${idx}.detail_2`, {
                     required: size
                       ? { value: true, message: '어꺠너비을 입력해주세요.' }
@@ -125,6 +129,8 @@ const RegisterField: FC<RegisterFieldProps> = ({ name, mode }) => {
                 <span>가슴단면 </span>
                 <RegisterFieldOptionInput
                   type="number"
+                  step="0.1"
+                  onWheelCapture={(e) => e.currentTarget.blur()}
                   {...register(`${name}.${idx}.detail_3`, {
                     required: size
                       ? { value: true, message: '가슴단면을 입력해주세요.' }
@@ -143,6 +149,8 @@ const RegisterField: FC<RegisterFieldProps> = ({ name, mode }) => {
                 <span>소매길이 </span>
                 <RegisterFieldOptionInput
                   type="number"
+                  step="0.1"
+                  onWheelCapture={(e) => e.currentTarget.blur()}
                   {...register(`${name}.${idx}.detail_4`, {
                     required: size
                       ? { value: true, message: '소매길이을 입력해주세요.' }

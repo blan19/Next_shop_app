@@ -177,6 +177,7 @@ const HeaderResponsive = styled(Responsive)`
               cursor: pointer;
               color: var(--color-primaryText);
               font-weight: bold;
+              font-size: 1.25rem;
             }
           }
         }
@@ -191,6 +192,7 @@ const HeaderResponsive = styled(Responsive)`
           span {
             color: var(--color-rPrimaryText);
             font-weight: bold;
+            font-size: 1.25rem;
             cursor: pointer;
             padding: 0 1rem;
           }
