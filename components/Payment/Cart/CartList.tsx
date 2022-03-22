@@ -1,10 +1,31 @@
+import { FunctionComponent, useCallback, useEffect } from 'react';
+import { CartContainerProps } from './CartContainer';
 import styled from 'styled-components';
+import fetchJson from '@/utils/lib/fetchJson';
 
-const CartList = () => {
+const CartList: FunctionComponent<CartContainerProps> = ({
+  cart,
+  userUid,
+  mutate,
+}) => {
+  const onRemoveAll = useCallback(async () => {
+    await fetchJson('/api/cart/removeAll', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userUid }),
+    }).then(() => {
+      console.log('카트 목록 전체삭제 성공');
+      mutate();
+    });
+  }, [mutate, userUid]);
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
   return (
     <CartListContainer>
       <div className="cart-list-head">
-        <span>전체삭제</span>
+        <span onClick={onRemoveAll}>전체삭제</span>
       </div>
       <h1>Cart List</h1>
     </CartListContainer>

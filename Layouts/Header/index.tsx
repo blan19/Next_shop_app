@@ -65,7 +65,7 @@ const Header = () => {
                 <li>
                   <div
                     className="header-cart-box"
-                    onClick={() => router.push('/payment/cart')}
+                    onClick={() => router.push(`/payment/${user.uid}`)}
                   >
                     <IoCartSharp />
                   </div>

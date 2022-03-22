@@ -11,3 +11,10 @@ export interface IUser {
   address: string;
   admin?: boolean;
 }
+
+export interface IFirebaseUser {
+  admin: boolean | null;
+  email: string;
+  fullAddress: string;
+  uid: string;
+}

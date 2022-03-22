@@ -5,11 +5,11 @@ export default async function removeAll(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { usesrUid } = req.body;
+  const { userUid } = req.body;
   try {
     await firebaseDb
       .collection('cart')
-      .doc(usesrUid)
+      .doc(userUid)
       .update({
         cart: [],
       })

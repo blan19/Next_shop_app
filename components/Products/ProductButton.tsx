@@ -42,14 +42,17 @@ const ProductButton: FunctionComponent<ProductButtonProps> = ({
             userUid: user?.uid,
           }),
         })
-          .then(() => console.log('카트 목록 업데이트'))
+          .then(() => {
+            console.log('카트 목록 업데이트');
+            router.push(`/payment/${user?.uid}`);
+          })
           .catch((error) => setError(error));
       } else {
       }
     } else {
       setError('❌  주문 목록이 존재하지 않습니다.');
     }
-  }, [cart, product.option, user?.uid]);
+  }, [cart, product.option, router, user?.uid]);
 
   return (
     <ProductButtonContainer>
