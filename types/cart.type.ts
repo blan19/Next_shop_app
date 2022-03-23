@@ -3,5 +3,6 @@ export interface ICart {
   thumbUrl: string;
   price: string;
   count: string;
+  cartUid: string;
   option: string[] | null;
 }

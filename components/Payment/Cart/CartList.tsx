@@ -2,6 +2,7 @@ import { FunctionComponent, useCallback, useEffect } from 'react';
 import { CartContainerProps } from './CartContainer';
 import styled from 'styled-components';
 import fetchJson from '@/utils/lib/fetchJson';
+import CartItem from './CartItem';
 
 const CartList: FunctionComponent<CartContainerProps> = ({
   cart,
@@ -27,7 +28,13 @@ const CartList: FunctionComponent<CartContainerProps> = ({
       <div className="cart-list-head">
         <span onClick={onRemoveAll}>전체삭제</span>
       </div>
-      <h1>Cart List</h1>
+      <ul>
+        {cart.map((item) => (
+          <li key={`${item.title}-${item.option?.map((ot) => ot)}`}>
+            <CartItem userUid={userUid} cartItem={item} mutate={mutate} />
+          </li>
+        ))}
+      </ul>
     </CartListContainer>
   );
 };
@@ -35,6 +42,7 @@ const CartList: FunctionComponent<CartContainerProps> = ({
 export default CartList;
 
 const CartListContainer = styled.div`
+  flex: 1;
   .cart-list-head {
     margin-bottom: 2rem;
     span {

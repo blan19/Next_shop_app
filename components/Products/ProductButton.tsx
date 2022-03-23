@@ -30,29 +30,25 @@ const ProductButton: FunctionComponent<ProductButtonProps> = ({
   const [visible, setVisible] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
-
   const onClickMoveCart = useCallback(async () => {
     if (cart) {
-      if (product.option) {
-        await fetchJson('/api/cart/create', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            products: cart,
-            userUid: user?.uid,
-          }),
+      await fetchJson('/api/cart/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          products: cart,
+          userUid: user?.uid,
+        }),
+      })
+        .then(() => {
+          console.log('카트 목록 업데이트');
+          router.push(`/payment/${user?.uid}`);
         })
-          .then(() => {
-            console.log('카트 목록 업데이트');
-            router.push(`/payment/${user?.uid}`);
-          })
-          .catch((error) => setError(error));
-      } else {
-      }
+        .catch((error) => setError(error));
     } else {
       setError('❌  주문 목록이 존재하지 않습니다.');
     }
-  }, [cart, product.option, router, user?.uid]);
+  }, [cart, router, user?.uid]);
 
   return (
     <ProductButtonContainer>

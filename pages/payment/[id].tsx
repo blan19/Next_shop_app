@@ -1,17 +1,11 @@
 import CartContainer from '@/components/Payment/Cart/CartContainer';
 import { flexCenter } from '@/utils/styles/Theme';
 import Layouts from 'Layouts';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { WishListResponsive } from 'pages/wishlist';
-import { ParsedUrlQuery } from 'querystring';
 import { FaSadTear } from 'react-icons/fa';
 import styled from 'styled-components';
 import useSWR from 'swr';
-
-interface IParams extends ParsedUrlQuery {
-  id: string;
-}
 
 const Cart = () => {
   const {
@@ -46,20 +40,6 @@ const Cart = () => {
 };
 
 export default Cart;
-
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const { id } = ctx.params as IParams;
-//   const cart = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/cart/${id}`, {
-//     method: 'PUT',
-//     headers: { 'Content-Type': 'application/json' },
-//   }).then((res) => res.json());
-//   return {
-//     props: {
-//       cart: cart.data,
-//       success: cart.success,
-//     },
-//   };
-// };
 
 export const CartResponsive = styled(WishListResponsive)`
   .list-error {

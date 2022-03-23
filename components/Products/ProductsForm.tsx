@@ -5,6 +5,7 @@ import Select, { StylesConfig } from 'react-select';
 import { flexCenter } from '@/utils/styles/Theme';
 import { IProduct } from '@/types/product.type';
 import ProductButton from './ProductButton';
+import { uid } from 'uid';
 
 interface ProductsFormProps {
   options: { value: string; label: string }[][] | null;
@@ -21,6 +22,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
       title: string;
       option: string[] | null;
       price: string;
+      cartUid: string;
       thumbUrl: string;
       count: number;
     }[]
@@ -32,6 +34,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
             title: product.title,
             option: null,
             price: product.price,
+            cartUid: uid(10),
             thumbUrl: product.thumbPath[0],
             count: 1,
           },
@@ -67,6 +70,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
           prev.concat({
             title: product.title,
             option,
+            cartUid: uid(10),
             thumbUrl: product.thumbPath[0],
             price: product.price,
             count: 1,
