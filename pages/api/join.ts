@@ -21,6 +21,7 @@ async function joinRoute(req: NextApiRequest, res: NextApiResponse) {
         isLoggedIn: true,
         admin: true,
         uid: credentials.user?.uid,
+        fullAddress: address,
         email,
       } as User;
       req.session.user = user;
@@ -31,6 +32,7 @@ async function joinRoute(req: NextApiRequest, res: NextApiResponse) {
         isLoggedIn: true,
         admin: false,
         uid: credentials.user?.uid,
+        fullAddress: address,
         email,
       } as User;
       req.session.user = user;

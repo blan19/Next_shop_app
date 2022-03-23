@@ -43,6 +43,9 @@ export default CartContainer;
 
 const CartContainerBlock = styled.div`
   display: flex;
+  @media screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
   .payment-cart-no {
     margin-top: 15rem;
     h1 {

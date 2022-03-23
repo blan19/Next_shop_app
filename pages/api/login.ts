@@ -1,4 +1,4 @@
-import { firebaseAuth } from '@/utils/firebase/clientApp';
+import { firebaseAuth, firebaseDb } from '@/utils/firebase/clientApp';
 import { sessionOptions } from '@/utils/iron/session';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
@@ -12,12 +12,16 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       email,
       password,
     );
+    const firebaseUser = await (
+      await firebaseDb.collection('users').doc(credentials.user?.uid).get()
+    ).data();
     if (credentials) {
       if (credentials.user?.email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
         const user = {
           isLoggedIn: true,
           admin: true,
           email,
+          fullAddress: firebaseUser?.fullAddress,
           uid: credentials.user?.uid,
         } as User;
         req.session.user = user;
@@ -28,6 +32,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
           isLoggedIn: true,
           admin: false,
           email,
+          fullAddress: firebaseUser?.fullAddress,
           uid: credentials.user?.uid,
         } as User;
         req.session.user = user;

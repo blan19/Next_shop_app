@@ -7,6 +7,7 @@ export type User = {
   admin: boolean;
   uid: string;
   email: string;
+  fullAddress: string;
 };
 
 async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
@@ -30,6 +31,7 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
       admin: false,
       uid: '',
       email: '',
+      fullAddress: '',
     });
   }
 }
