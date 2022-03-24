@@ -5,13 +5,14 @@ import { NextApiRequest, NextApiResponse } from 'next';
 interface BodyType {
   products: ICart[];
   userUid: string;
+  uid: string;
 }
 
 export default async function createCart(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { products, userUid } = req.body as BodyType;
+  const { products, userUid, uid } = req.body as BodyType;
   try {
     const exist = await (
       await firebaseDb.collection('cart').doc(userUid).get()
@@ -23,6 +24,11 @@ export default async function createCart(
         .doc(userUid)
         .update({
           cart: updateCart,
+          amount: updateCart.reduce(
+            (acc: number, cur: ICart) =>
+              acc + Number(cur.count) * Number(cur.price),
+            0,
+          ),
           updateAt: firebaseNow,
         })
         .then(() => console.log('update cart'));
@@ -34,6 +40,11 @@ export default async function createCart(
         .set({
           cart: products,
           user: userUid,
+          amount: products.reduce(
+            (acc, cur) => acc + Number(cur.count) * Number(cur.price),
+            0,
+          ),
+          uid,
           createAt: firebaseNow,
           updateAt: firebaseNow,
         })

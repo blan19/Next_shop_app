@@ -24,6 +24,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
       price: string;
       cartUid: string;
       thumbUrl: string;
+      productUid: string;
       count: number;
     }[]
   >(
@@ -34,6 +35,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
             title: product.title,
             option: null,
             price: product.price,
+            productUid: product.uid,
             cartUid: uid(10),
             thumbUrl: product.thumbPath[0],
             count: 1,
@@ -70,6 +72,7 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
           prev.concat({
             title: product.title,
             option,
+            productUid: product.uid,
             cartUid: uid(10),
             thumbUrl: product.thumbPath[0],
             price: product.price,
@@ -91,7 +94,15 @@ const ProductsForm: FunctionComponent<ProductsFormProps> = ({
           );
         }
       },
-      [cart, method, options, product.price, product.thumbPath, product.title],
+      [
+        cart,
+        method,
+        options,
+        product.price,
+        product.thumbPath,
+        product.title,
+        product.uid,
+      ],
     ),
   );
 

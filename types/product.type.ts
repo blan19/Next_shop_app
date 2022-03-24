@@ -15,6 +15,7 @@ export type IProduct = {
   optionInfo: { contents: string }[] | null;
   price: string;
   size: boolean;
+  sale: number;
   sizeInfo:
     | {
         size: string;

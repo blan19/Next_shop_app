@@ -11,6 +11,7 @@ const CartPayment = dynamic(() => import('./CartPayment'));
 
 export interface CartContainerProps {
   cart: ICart[];
+  cartUid: string;
   userUid: string;
   mutate: KeyedMutator<any>;
 }
@@ -18,14 +19,25 @@ export interface CartContainerProps {
 const CartContainer: FunctionComponent<CartContainerProps> = ({
   cart,
   userUid,
+  cartUid,
   mutate,
 }) => {
   return (
     <CartContainerBlock>
       {cart.length > 0 ? (
         <>
-          <CartList mutate={mutate} userUid={userUid} cart={cart} />
-          <CartPayment cart={cart} />
+          <CartList
+            cartUid={cartUid}
+            mutate={mutate}
+            userUid={userUid}
+            cart={cart}
+          />
+          <CartPayment
+            mutate={mutate}
+            cartUid={cartUid}
+            cart={cart}
+            userUid={userUid}
+          />
         </>
       ) : (
         <div className="payment-cart-no">

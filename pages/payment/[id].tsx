@@ -22,6 +22,7 @@ const Cart = () => {
             </div>
             <CartContainer
               cart={cartData.data.cart}
+              cartUid={cartData.data.uid}
               userUid={cartData.data.user}
               mutate={mutate}
             />

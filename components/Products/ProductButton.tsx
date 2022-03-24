@@ -8,6 +8,7 @@ import useUser from '@/hooks/useUser';
 import { useRouter } from 'next/router';
 import Modal from '../Common/Modal';
 import fetchJson from '@/utils/lib/fetchJson';
+import { uid } from 'uid';
 
 interface ProductButtonProps {
   cart:
@@ -37,6 +38,7 @@ const ProductButton: FunctionComponent<ProductButtonProps> = ({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           products: cart,
+          uid: uid(10),
           userUid: user?.uid,
         }),
       })

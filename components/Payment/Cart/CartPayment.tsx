@@ -1,11 +1,14 @@
 import useUser from '@/hooks/useUser';
 import { ICart } from '@/types/cart.type';
 import { ErrorMessage } from '@hookform/error-message';
-import { FunctionComponent, useCallback, useEffect } from 'react';
+import { FunctionComponent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import { uid } from 'uid';
 import { RequestPayResponse } from 'iamport-typings';
+import fetchJson from '@/utils/lib/fetchJson';
+import { KeyedMutator } from 'swr';
+import { useRouter } from 'next/router';
 
 interface PaymentFormTypes {
   name: string;
@@ -16,9 +19,16 @@ interface PaymentFormTypes {
 
 interface CartPaymentProps {
   cart: ICart[];
+  cartUid: string;
+  mutate: KeyedMutator<any>;
+  userUid: string;
 }
 
-const CartPayment: FunctionComponent<CartPaymentProps> = ({ cart }) => {
+const CartPayment: FunctionComponent<CartPaymentProps> = ({
+  cart,
+  userUid,
+  mutate,
+}) => {
   const {
     register,
     reset,
@@ -26,40 +36,67 @@ const CartPayment: FunctionComponent<CartPaymentProps> = ({ cart }) => {
     handleSubmit,
   } = useForm<PaymentFormTypes>();
   const { user } = useUser();
+  const router = useRouter();
+  const [error, setError] = useState('');
   const onClickPayment = useCallback(
     async (data: PaymentFormTypes) => {
       const { name, call, email } = data;
-      const merchant_uid = uid(10);
-      const params = {
-        pg: 'uplus',
-        pay_method: 'card',
-        merchant_uid,
-        name: user?.uid,
-        amount: cart.reduce(
-          (acc, cur) => acc + Number(cur.count) * Number(cur.price),
-          0,
-        ),
-        buyer_email: email,
-        buyer_name: name,
-        buyer_tel: call,
-        buyer_addr: user?.fullAddress,
-        m_redirect_url: '/payment/redirect',
-      };
-      const { IMP } = window;
-      if (IMP) {
-        IMP.init(
-          process.env.NEXT_PUBLIC_MERCHANT_ID
-            ? process.env.NEXT_PUBLIC_MERCHANT_ID
-            : '',
-        );
-        IMP.request_pay(params, (res: RequestPayResponse) => {
-          if (res.success) {
-          } else {
-          }
-        });
+      if (user) {
+        const params = {
+          pg: 'uplus',
+          pay_method: 'card',
+          merchant_uid: uid(10),
+          name: cart
+            .map((item) => item.title + ' ' + item.option?.join(' '))
+            .join(' / '),
+          amount: cart.reduce(
+            (acc, cur) => acc + Number(cur.count) * Number(cur.price),
+            0,
+          ),
+          buyer_email: email,
+          buyer_name: name,
+          buyer_tel: call,
+          buyer_addr: user?.fullAddress,
+          m_redirect_url: `${process.env.NEXT_PUBLIC_URL}/payment/complete`,
+        };
+        const { IMP } = window;
+        if (IMP) {
+          IMP.init(
+            process.env.NEXT_PUBLIC_MERCHANT_ID
+              ? process.env.NEXT_PUBLIC_MERCHANT_ID
+              : '',
+          );
+          IMP.request_pay(params, async (res: RequestPayResponse) => {
+            const { merchant_uid, imp_uid } = res;
+            if (res.success) {
+              await fetchJson('/api/payment/pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  merchant_uid,
+                  imp_uid,
+                  userUid,
+                }),
+              }).then((res: any) => {
+                mutate();
+                console.log(res);
+
+                router.push(
+                  `/payment/complete?merchant_uid=${res.data.merchant_uid}&imp_uid=${res.data.imp_uid}&userUid=${res.data.userUid}&success=true`,
+                );
+              });
+            } else {
+              setError('결제에 실패했습니다');
+              reset();
+            }
+          });
+        }
+      } else {
+        setError('로그인이 필요한 서비스입니다');
+        reset();
       }
     },
-    [cart, user?.fullAddress, user?.uid],
+    [cart, mutate, reset, router, user, userUid],
   );
   useEffect(() => {
     const jquery = document.createElement('script');
