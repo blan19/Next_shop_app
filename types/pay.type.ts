@@ -11,6 +11,7 @@ export interface IPaymentData {
   buyer_email: string;
   buyer_tel: string;
   buyer_addr: string;
+  pay_method: string;
   name: string;
 }
 

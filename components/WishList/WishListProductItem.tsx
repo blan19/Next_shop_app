@@ -13,7 +13,6 @@ interface WishListProductItemProps {
 }
 const WishListProductItem: FunctionComponent<WishListProductItemProps> = ({
   wish,
-  cart,
   remove,
 }) => {
   const router = useRouter();
@@ -29,7 +28,7 @@ const WishListProductItem: FunctionComponent<WishListProductItemProps> = ({
       />
       <div
         className="wish-item-info"
-        onCanPlay={() => router.push(`/products/${wish.uid}/${wish.title}`)}
+        onClick={() => router.push(`/products/${wish.uid}/${wish.title}`)}
       >
         <h1>
           ₩{' '}
@@ -42,7 +41,6 @@ const WishListProductItem: FunctionComponent<WishListProductItemProps> = ({
       <div className="wish-item-category">
         <p># {wish.category.toLowerCase()}</p>
         <div className="wish-item-button">
-          <div className="wish-item-cart">{cart}</div>
           <div
             className="wish-item-remove"
             onClick={() =>

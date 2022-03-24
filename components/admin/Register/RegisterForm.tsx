@@ -386,6 +386,10 @@ const RegisterFormContainer = styled.form`
       flex-direction: column;
       align-items: flex-start;
       margin-bottom: 2rem;
+      select {
+        width: 8rem;
+        font-size: 1.25rem;
+      }
     }
     .register-size,
     .register-option,
@@ -400,6 +404,7 @@ const RegisterFormContainer = styled.form`
         margin-bottom: 1rem;
         span {
           width: 6rem;
+          font-size: 1.25rem;
           font-weight: bold;
           color: var(--color-primaryText);
         }

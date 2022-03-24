@@ -7,9 +7,16 @@ const Index: NextPage = () => {
   return (
     <Layouts>
       <Home>
-        <IndextContainer>
-          <h1>asd</h1>
-        </IndextContainer>
+        <IndexContainer>
+          <IndexContainerTitle>
+            <h1>Best 5</h1>
+            <p>view more</p>
+          </IndexContainerTitle>
+          <IndexContainerTitle>
+            <h1>New Arrival</h1>
+            <p>view more</p>
+          </IndexContainerTitle>
+        </IndexContainer>
       </Home>
     </Layouts>
   );
@@ -17,4 +24,16 @@ const Index: NextPage = () => {
 
 export default Index;
 
-const IndextContainer = styled.div``;
+const IndexContainer = styled.div``;
+
+const IndexContainerTitle = styled.div`
+  h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--color-primaryText);
+  }
+  p {
+    font-size: 2rem;
+    color: var(--color-subText);
+  }
+`;

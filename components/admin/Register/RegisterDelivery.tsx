@@ -67,8 +67,13 @@ const RegisterDeliveryContainer = styled.div`
     align-items: center;
     span {
       width: 6rem;
+      font-size: 1.25rem;
       font-weight: bold;
       color: var(--color-primaryText);
+    }
+    select {
+      width: 8rem;
+      font-size: 1.25rem;
     }
     input {
       outline: none;
