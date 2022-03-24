@@ -4,11 +4,12 @@ import { InferGetServerSidePropsType } from 'next';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import Layouts from 'Layouts';
-import AdminNav from '@/components/admin/AdminNav';
 import { RegisterResponsive } from './register';
 import EditProductList from '@/components/admin/Edit/EditProductList';
 import useSWR from 'swr';
 import { IProduct } from '@/types/product.type';
+import { adminLink } from '@/utils/lib/navLink';
+import NavBar from '@/components/admin/NavBar';
 
 const Edit = ({
   user,
@@ -28,7 +29,7 @@ const Edit = ({
   return (
     <Layouts>
       <RegisterResponsive>
-        <AdminNav />
+        <NavBar link={adminLink} />
         {products ? (
           <EditProductList mutate={mutateProducts} products={products} />
         ) : null}

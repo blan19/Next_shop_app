@@ -1,17 +1,21 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import { AiFillEdit, AiFillFileAdd } from 'react-icons/ai';
-import {
-  MdOutlineArrowDropDown,
-  MdDashboardCustomize,
-  MdOutlineReceiptLong,
-} from 'react-icons/md';
-import { useCallback, useState } from 'react';
+import { MdOutlineArrowDropDown } from 'react-icons/md';
+import { FunctionComponent, useCallback, useState } from 'react';
 
 interface SelectProps {
   value: string;
   label: string;
+}
+
+interface NavBarProps {
+  link: {
+    id: string;
+    name: string;
+    path: string;
+    icon: JSX.Element;
+  }[];
 }
 
 const options = [
@@ -33,34 +37,7 @@ const options = [
   },
 ];
 
-const adminLink = [
-  {
-    id: '/admin/dashboard',
-    name: '대시보드',
-    path: '/admin/dashboard',
-    icon: <MdDashboardCustomize />,
-  },
-  {
-    id: '/admin/register',
-    name: '상품등록',
-    path: '/admin/register',
-    icon: <AiFillFileAdd />,
-  },
-  {
-    id: '/admin/edit',
-    name: '상품수정',
-    path: '/admin/edit',
-    icon: <AiFillEdit />,
-  },
-  {
-    id: '/admin/receipt',
-    name: '결제내역',
-    path: '/admin/receipt',
-    icon: <MdOutlineReceiptLong />,
-  },
-];
-
-const AdminNav = () => {
+const NavBar: FunctionComponent<NavBarProps> = ({ link: routerLink }) => {
   const [select, setSelect] = useState<SelectProps>({
     value: 'ALL',
     label: 'All',
@@ -73,13 +50,14 @@ const AdminNav = () => {
     },
     [router],
   );
+
   return (
     <AdminNavContainer>
-      {adminLink.map((link) => (
+      {routerLink.map((link) => (
         <Link key={link.id} href={link.path} passHref>
           <div
             className={
-              router.pathname === link.path
+              router.pathname === link.id
                 ? 'admin-nav-wrapper admin-nav-active'
                 : 'admin-nav-wrapper'
             }
@@ -127,7 +105,7 @@ const AdminNav = () => {
   );
 };
 
-export default AdminNav;
+export default NavBar;
 
 const AdminNavContainer = styled.nav`
   display: flex;

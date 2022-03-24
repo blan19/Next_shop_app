@@ -7,7 +7,8 @@ import styled from 'styled-components';
 import Responsive from '@/utils/styles/Responsive';
 import Layouts from '../../Layouts';
 import RegisterForm from '@/components/admin/Register/RegisterForm';
-import AdminNav from '@/components/admin/AdminNav';
+import { adminLink } from '@/utils/lib/navLink';
+import NavBar from '@/components/admin/NavBar';
 
 const Register = ({
   user,
@@ -24,7 +25,7 @@ const Register = ({
   return (
     <Layouts>
       <RegisterResponsive>
-        <AdminNav />
+        <NavBar link={adminLink} />
         <RegisterForm />
       </RegisterResponsive>
     </Layouts>

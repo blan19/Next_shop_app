@@ -74,7 +74,7 @@ const Header = () => {
                   <div className="header-user">
                     <div
                       className="header-hover-box"
-                      onClick={() => router.push('/profile')}
+                      onClick={() => router.push(`/profile/${user.uid}`)}
                     >
                       <IoPerson />
                     </div>
