@@ -2,7 +2,6 @@ import { firebaseAuth, firebaseDb } from '@/utils/firebase/clientApp';
 import { sessionOptions } from '@/utils/iron/session';
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { User } from './user';
 
 async function joinRoute(req: NextApiRequest, res: NextApiResponse) {
   const { email, password, address } = await req.body;
@@ -16,28 +15,11 @@ async function joinRoute(req: NextApiRequest, res: NextApiResponse) {
       .collection('users')
       .doc(credentials.user?.uid)
       .set({ uid: credentials.user?.uid, email, password, address });
-    if (email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
-      const user = {
-        isLoggedIn: true,
-        admin: true,
-        uid: credentials.user?.uid,
-        fullAddress: address,
-        email,
-      } as User;
-      req.session.user = user;
-      await req.session.save();
-      res.json(user);
-    } else {
-      const user = {
-        isLoggedIn: true,
-        admin: false,
-        uid: credentials.user?.uid,
-        fullAddress: address,
-        email,
-      } as User;
-      req.session.user = user;
-      await req.session.save();
-      res.json(user);
+    switch (credentials.user?.emailVerified) {
+      case false:
+        credentials.user.sendEmailVerification();
+        res.status(200).json({ message: 'need verify' });
+        break;
     }
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });

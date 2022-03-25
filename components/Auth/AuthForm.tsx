@@ -13,6 +13,7 @@ import AuthAdress from './AuthAdress';
 import { useRouter } from 'next/router';
 import fetchJson from '@/utils/lib/fetchJson';
 import useUser from '@/hooks/useUser';
+import axios from 'axios';
 
 interface AuthFormProps {
   auth: string;
@@ -51,21 +52,28 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
     };
     try {
       if (auth === 'Login') {
-        await mutateUser(
-          fetchJson('/api/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          }),
-        );
+        await axios({
+          url: '/api/login',
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          data: JSON.stringify(body),
+        }).then((res: any) => {
+          if (res.data.message === 'need verify') {
+            router.push('/verify');
+          }
+          mutateUser();
+        });
       } else {
-        await mutateUser(
-          fetchJson('/api/join', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          }),
-        );
+        await axios({
+          url: '/api/join',
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          data: JSON.stringify(body),
+        }).then((res: any) => {
+          if (res.status === 200) {
+            router.push('/verify');
+          }
+        });
       }
     } catch (error) {
       console.log(error);
@@ -94,7 +102,7 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
     <AuthFormContainer onSubmit={handleSubmit(onSubmit)}>
       <AuthFormResponsive>
         <div className="auth-info">
-          <span>{auth}</span>
+          <span onClick={() => router.push('/')}>{auth}</span>
           {auth === 'Login' ? (
             <p>Welcome Back to Everything, Enjoy your shoping</p>
           ) : (
@@ -234,6 +242,7 @@ const AuthFormResponsive = styled(Responsive)`
     margin-top: 5rem;
     ${flexColCenter}
     span {
+      cursor: pointer;
       font-size: 3rem;
       font-weight: bold;
       color: #9ba5ba;

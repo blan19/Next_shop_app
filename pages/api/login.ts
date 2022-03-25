@@ -12,35 +12,38 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
       email,
       password,
     );
-    const firebaseUser = await (
-      await firebaseDb.collection('users').doc(credentials.user?.uid).get()
-    ).data();
-    if (credentials) {
-      if (credentials.user?.email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
-        const user = {
-          isLoggedIn: true,
-          admin: true,
-          email,
-          fullAddress: firebaseUser?.fullAddress,
-          uid: credentials.user?.uid,
-        } as User;
-        req.session.user = user;
-        await req.session.save();
-        res.json(user);
-      } else {
-        const user = {
-          isLoggedIn: true,
-          admin: false,
-          email,
-          fullAddress: firebaseUser?.fullAddress,
-          uid: credentials.user?.uid,
-        } as User;
-        req.session.user = user;
-        await req.session.save();
-        res.json(user);
-      }
-    } else {
-      res.status(500).json({ message: 'failed login' });
+    switch (credentials.user?.emailVerified) {
+      case true:
+        const firebaseUser = await (
+          await firebaseDb.collection('users').doc(credentials.user?.uid).get()
+        ).data();
+        if (credentials.user?.email === process.env.NEXT_PRIVATE_ADMIN_EMAIL) {
+          const user = {
+            isLoggedIn: true,
+            admin: true,
+            email,
+            fullAddress: firebaseUser?.fullAddress,
+            uid: credentials.user?.uid,
+          } as User;
+          req.session.user = user;
+          await req.session.save();
+          res.json(user);
+        } else {
+          const user = {
+            isLoggedIn: true,
+            admin: false,
+            email,
+            fullAddress: firebaseUser?.fullAddress,
+            uid: credentials.user?.uid,
+          } as User;
+          req.session.user = user;
+          await req.session.save();
+          res.json(user);
+        }
+        break;
+      case false:
+        res.status(200).json({ success: false, message: 'need verify' });
+        break;
     }
   } catch (error) {
     res.status(500).json({ message: (error as Error).message });
