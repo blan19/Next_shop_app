@@ -11,7 +11,6 @@ import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import AuthAdress from './AuthAdress';
 import { useRouter } from 'next/router';
-import fetchJson from '@/utils/lib/fetchJson';
 import useUser from '@/hooks/useUser';
 import axios from 'axios';
 
@@ -21,6 +20,7 @@ interface AuthFormProps {
 
 export interface FormProps {
   email: string;
+  name: string;
   password: string;
   passwordConfirm: string;
   address: string;
@@ -43,10 +43,11 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
   password.current = watch('password');
 
   const onSubmit = async (data: FormProps) => {
-    const { email, password, address, addressDetail } = data;
+    const { email, password, address, addressDetail, name } = data;
     const fullAddress = `${address} ${addressDetail}`;
     const body = {
       email,
+      name,
       password,
       address: fullAddress,
     };
@@ -59,7 +60,7 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
           data: JSON.stringify(body),
         }).then((res: any) => {
           if (res.data.message === 'need verify') {
-            router.push('/verify');
+            router.push(`/auth/process/verify?email=${email}`);
           }
           mutateUser();
         });
@@ -71,7 +72,7 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
           data: JSON.stringify(body),
         }).then((res: any) => {
           if (res.status === 200) {
-            router.push('/verify');
+            router.push(`/auth/process/verify?email=${email}`);
           }
         });
       }
@@ -89,6 +90,7 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
     return () => {
       reset({
         email: '',
+        name: '',
         password: '',
         passwordConfirm: '',
         address: '',
@@ -133,6 +135,23 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
           {errors.email && errors.email.type === 'pattern' && (
             <AuthErrorMessage>
               <p>❌ 이메일을 정확히 입력해주세요.</p>
+            </AuthErrorMessage>
+          )}
+          {auth !== 'Login' && (
+            <label>
+              <span>Name</span>
+              <input
+                type="text"
+                {...register('name', {
+                  required: '이름을 입력해주세요',
+                })}
+                placeholder="이름"
+              />
+            </label>
+          )}
+          {errors.name && errors.name.type === 'required' && (
+            <AuthErrorMessage>
+              <p>❌ 이름을 입력해주세요.</p>
             </AuthErrorMessage>
           )}
           <label>

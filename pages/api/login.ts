@@ -22,6 +22,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
             isLoggedIn: true,
             admin: true,
             email,
+            name: firebaseUser?.name,
             fullAddress: firebaseUser?.fullAddress,
             uid: credentials.user?.uid,
           } as User;
@@ -33,6 +34,7 @@ async function loginRoute(req: NextApiRequest, res: NextApiResponse) {
             isLoggedIn: true,
             admin: false,
             email,
+            name: firebaseUser?.name,
             fullAddress: firebaseUser?.fullAddress,
             uid: credentials.user?.uid,
           } as User;

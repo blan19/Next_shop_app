@@ -4,17 +4,18 @@ import { withIronSessionApiRoute } from 'iron-session/next';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 async function joinRoute(req: NextApiRequest, res: NextApiResponse) {
-  const { email, password, address } = await req.body;
+  const { email, password, address, name } = await req.body;
 
   try {
     const credentials = await firebaseAuth.createUserWithEmailAndPassword(
       email,
       password,
     );
+    credentials.user?.updateProfile({ displayName: name });
     await firebaseDb
       .collection('users')
       .doc(credentials.user?.uid)
-      .set({ uid: credentials.user?.uid, email, password, address });
+      .set({ uid: credentials.user?.uid, email, password, address, name });
     switch (credentials.user?.emailVerified) {
       case false:
         credentials.user.sendEmailVerification();

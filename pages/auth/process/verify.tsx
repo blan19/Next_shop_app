@@ -1,11 +1,47 @@
+import useUser from '@/hooks/useUser';
 import Responsive from '@/utils/styles/Responsive';
 import { flexColCenter } from '@/utils/styles/Theme';
+import axios from 'axios';
 import Layouts from 'Layouts';
 import { useRouter } from 'next/router';
+import { useCallback, useEffect } from 'react';
 import styled from 'styled-components';
+import { ToastContainer, toast } from 'react-toastify';
+import useDarkMode from 'use-dark-mode';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Verify = () => {
+  const darkmode = useDarkMode(false);
   const router = useRouter();
+  const { user } = useUser();
+
+  const onVerify = useCallback(async () => {
+    if (router.query.email) {
+      await axios({
+        url: '/api/verify',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify({ email: router.query.email }),
+      }).then(() =>
+        toast('링크를 다시 보냈습니다', {
+          position: 'top-center',
+          autoClose: 2000,
+          progress: undefined,
+          hideProgressBar: true,
+          closeOnClick: false,
+        }),
+      );
+    } else {
+    }
+  }, [router.query.email]);
+
+  useEffect(() => {
+    if (user) {
+      if (user.isLoggedIn) {
+        router.push('/');
+      }
+    }
+  }, [router, user]);
   return (
     <Layouts>
       <VerifyResponsive>
@@ -21,11 +57,13 @@ const Verify = () => {
           </div>
           <div className="verify-reverify-button">
             <span>
-              링크가 유효하지 않습니까? <b>링크 다시 보내기</b>
+              링크가 유효하지 않습니까?{' '}
+              <b onClick={onVerify}>링크 다시 보내기</b>
             </span>
           </div>
         </div>
       </VerifyResponsive>
+      <ToastContainer theme={darkmode.value ? 'dark' : 'light'} />
     </Layouts>
   );
 };

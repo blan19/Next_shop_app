@@ -17,9 +17,13 @@ const ProfileUserForm: FunctionComponent<ProfileUserFormProps> = ({ user }) => {
           <h1>{user.email}</h1>
         </div>
         <div className="profile-user-info">
+          <p>이름</p>
+          <label>
+            <input type="text" value={user.name} readOnly />
+          </label>
           <p>주소</p>
           <label>
-            <input type="text" value={user.fullAddress} readOnly />
+            <input type="text" value={user.address} readOnly />
           </label>
         </div>
         <div className="profile-user-button">
@@ -57,6 +61,7 @@ const ProfileUserFormContainer = styled.form`
     .profile-user-info {
       margin-top: 3rem;
       p {
+        color: var(--color-primaryText);
         font-size: 2rem;
         margin-top: 1rem;
         margin-bottom: 0.5rem;
@@ -67,7 +72,7 @@ const ProfileUserFormContainer = styled.form`
         width: 100%;
         border: 1px solid var(--color-subColor);
         background: var(--color-lightColor);
-        color: var(--color-primaryText);
+        color: #000;
         padding: 0.5rem 1rem;
         font-size: 2rem;
         font-weight: 300;

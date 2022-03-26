@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import { GiClothes } from 'react-icons/gi';
 import { MdFlatware, MdHouse, MdEmojiSymbols } from 'react-icons/md';
-import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 const navLink = [
   {
@@ -31,14 +31,17 @@ const navLink = [
   },
 ];
 const NavBar = () => {
-  const router = useRouter();
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  return mounted ? (
     <NavBarNavigation>
       {navLink.map((link) => (
         <Link key={link.id} href={link.path} passHref>
           <div
             className={
-              router.pathname === link.path
+              window.location.pathname === link.path
                 ? 'home-nav-link home-nav-active'
                 : 'home-nav-link'
             }
@@ -49,7 +52,7 @@ const NavBar = () => {
         </Link>
       ))}
     </NavBarNavigation>
-  );
+  ) : null;
 };
 
 export default NavBar;

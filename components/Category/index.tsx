@@ -1,13 +1,17 @@
 import { IProduct } from '@/types/product.type';
 import { FunctionComponent } from 'react';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import CategoryList from './CategoryList';
 
 interface CategoryListProps {
   category: string;
+  products: IProduct[];
 }
-const CategoryListTitle: FunctionComponent<CategoryListProps> = ({
+
+interface CategoryListTitleProps {
+  category: string;
+}
+const CategoryListTitle: FunctionComponent<CategoryListTitleProps> = ({
   category,
 }) => {
   return (
@@ -18,8 +22,10 @@ const CategoryListTitle: FunctionComponent<CategoryListProps> = ({
   );
 };
 
-const Category: FunctionComponent<CategoryListProps> = ({ category }) => {
-  const { data: products } = useSWR<IProduct[]>('/api/products/product');
+const Category: FunctionComponent<CategoryListProps> = ({
+  category,
+  products,
+}) => {
   return (
     <CategoryContainer>
       <CategoryListTitle category={category} />

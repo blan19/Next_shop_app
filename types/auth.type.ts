@@ -15,6 +15,7 @@ export interface IUser {
 export interface IFirebaseUser {
   admin: boolean | null;
   email: string;
-  fullAddress: string;
+  address: string;
+  name: string;
   uid: string;
 }
