@@ -1,4 +1,5 @@
 import HomeList from '@/components/Home/HomeList';
+import { firebaseDb } from '@/utils/firebase/clientApp';
 import Home from 'Layouts/Home';
 import { GetStaticProps, InferGetStaticPropsType, NextPage } from 'next';
 import styled from 'styled-components';
@@ -31,16 +32,28 @@ const Index: NextPage = ({
 export default Index;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const products = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/home/read`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  }).then((res) => res.json());
-  return {
-    props: {
-      popular: products.data.popular,
-      recent: products.data.recent,
-    },
-  };
+  try {
+    const snapshotByCount = await firebaseDb
+      .collection('products')
+      .orderBy('count', 'desc')
+      .limit(5)
+      .get();
+    const popular = snapshotByCount.docs.map((doc) => doc.data());
+    const snapshotByDate = await firebaseDb
+      .collection('products')
+      .orderBy('createAt', 'desc')
+      .limit(5)
+      .get();
+    const recent = snapshotByDate.docs.map((doc) => doc.data());
+    return {
+      props: {
+        popular: JSON.parse(JSON.stringify(popular)),
+        recent: JSON.parse(JSON.stringify(recent)),
+      },
+    };
+  } catch (error) {
+    throw error;
+  }
 };
 
 const IndexContainer = styled.div`
