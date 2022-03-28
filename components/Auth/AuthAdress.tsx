@@ -1,11 +1,14 @@
 import { flexCenter } from '@/utils/styles/Theme';
 import React, { Dispatch, FunctionComponent, SetStateAction } from 'react';
 import DaumPostcode from 'react-daum-postcode';
-import styled, { css } from 'styled-components';
+import { UseFormSetValue } from 'react-hook-form';
+import styled from 'styled-components';
+import { FormProps } from './AuthForm';
 
 interface AuthAdressProps {
   setAdress: Dispatch<SetStateAction<string>>;
   setVisible: Dispatch<SetStateAction<boolean>>;
+  setValue: UseFormSetValue<FormProps>;
 }
 
 type DaumPostcodeType = {
@@ -15,8 +18,10 @@ type DaumPostcodeType = {
 const AuthAdress: FunctionComponent<AuthAdressProps> = ({
   setAdress,
   setVisible,
+  setValue,
 }) => {
   const onSubmitAdress = (data: DaumPostcodeType) => {
+    setValue('address', data.address);
     setAdress(data.address);
     setVisible((prev) => !prev);
   };

@@ -35,6 +35,7 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
   } = useForm<FormProps>();
   const [address, setAddress] = useState('');
   const [visible, setVisible] = useState(false);
@@ -85,6 +86,10 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
     if (auth === 'Login') router.push('/auth/process/join');
     else router.push('/auth/login');
   }, [auth, router]);
+
+  useEffect(() => {
+    setAddress((prev) => prev);
+  }, [address]);
 
   useEffect(() => {
     return () => {
@@ -193,7 +198,9 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
               <label>
                 <span>Address</span>
                 <input
-                  {...register('address', { required: true })}
+                  {...register('address', {
+                    required: true,
+                  })}
                   onClick={() => setVisible(true)}
                   value={address}
                   readOnly
@@ -202,7 +209,11 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
                   placeholder="주소"
                 />
                 {visible && (
-                  <AuthAdress setVisible={setVisible} setAdress={setAddress} />
+                  <AuthAdress
+                    setVisible={setVisible}
+                    setAdress={setAddress}
+                    setValue={setValue}
+                  />
                 )}
               </label>
               <label>
