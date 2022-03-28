@@ -34,7 +34,7 @@ export default createGlobalStyle`
     --color-primaryText: #fff;
     --color-rPrimaryText: #000;
     --color-subText: #D7D7D7;
-    --color-mainColor: #F5B3D5;
+    --color-mainColor: #5c940d;
     --color-subColor: #292A2D;
     --color-hoverColor: #474C50;
     --color-lightColor: #f3f3f3;
@@ -45,7 +45,7 @@ export default createGlobalStyle`
     --color-primaryText: #000;
     --color-rPrimaryText: #fff;
     --color-subText: #B5B5B3;
-    --color-mainColor: #F5B3D5;
+    --color-mainColor: #5c940d;
     --color-subColor: #E1E1E1;
     --color-hoverColor: #efefef;
     --color-lightColor: #f3f3f3;

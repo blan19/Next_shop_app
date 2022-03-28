@@ -17,8 +17,8 @@ const HomeItem: FunctionComponent<HomeItemProps> = ({ product }) => {
     >
       <Image
         src={product.thumbPath[0]}
-        width="200px"
-        height="300px"
+        width="300px"
+        height="400px"
         alt='"thumbnail'
       />
       <div className="home-product-info">
