@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import CategoryList from './CategoryList';
 
 interface CategoryListProps {
-  category: string;
   products: IProduct[];
+  category: string;
 }
 
 interface CategoryListTitleProps {
@@ -23,13 +23,13 @@ const CategoryListTitle: FunctionComponent<CategoryListTitleProps> = ({
 };
 
 const Category: FunctionComponent<CategoryListProps> = ({
-  category,
   products,
+  category,
 }) => {
   return (
     <CategoryContainer>
       <CategoryListTitle category={category} />
-      {products && <CategoryList products={products} category={category} />}
+      <CategoryList products={products} />
     </CategoryContainer>
   );
 };

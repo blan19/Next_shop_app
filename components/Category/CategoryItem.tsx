@@ -21,12 +21,7 @@ const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
   const [visible, setVisible] = useState(false);
   return (
     <CategoryItemContainer>
-      <Thumbnail
-        images={product.thumbPath}
-        width="230px"
-        height="300px"
-        radius
-      />
+      <Thumbnail images={product.thumbPath} width={230} height={300} radius />
       <Link href={`/products/${product.uid}/${product.title}`} passHref>
         <div className="category-item-info">
           <h1>

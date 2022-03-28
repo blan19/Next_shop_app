@@ -1,4 +1,5 @@
-import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+// import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import useCategory from '@/hooks/useCategory';
 import { IProduct } from '@/types/product.type';
 import { FunctionComponent } from 'react';
 import styled from 'styled-components';
@@ -7,17 +8,10 @@ import CategoryItem from './CategoryItem';
 
 interface CategoryListProps {
   products: IProduct[];
-  category: string;
 }
 
-const CategoryList: FunctionComponent<CategoryListProps> = ({
-  products,
-  category,
-}) => {
-  const { containerRef, products: categories } = useInfiniteScroll(
-    category,
-    products,
-  );
+const CategoryList: FunctionComponent<CategoryListProps> = ({ products }) => {
+  const { containerRef, products: categories } = useCategory(products);
   return (
     <CategoryListContainer>
       {categories.length > 0 ? (
