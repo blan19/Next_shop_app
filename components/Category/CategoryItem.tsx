@@ -136,7 +136,7 @@ const CategoryItemContainer = styled.div`
       width: 2.5rem;
       height: 2.5rem;
       right: 1.5rem;
-      bottom: 10.5rem;
+      bottom: 9rem;
       svg {
         font-size: 1.5rem;
       }
@@ -145,7 +145,7 @@ const CategoryItemContainer = styled.div`
       width: 2.5rem;
       height: 2.5rem;
       right: 1.5rem;
-      bottom: 12rem;
+      bottom: 10rem;
       svg {
         font-size: 1.5rem;
       }
