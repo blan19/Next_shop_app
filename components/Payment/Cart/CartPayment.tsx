@@ -9,6 +9,7 @@ import { RequestPayResponse } from 'iamport-typings';
 import fetchJson from '@/utils/lib/fetchJson';
 import { KeyedMutator } from 'swr';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 interface PaymentFormTypes {
   name: string;
@@ -41,6 +42,7 @@ const CartPayment: FunctionComponent<CartPaymentProps> = ({
   const onClickPayment = useCallback(
     async (data: PaymentFormTypes) => {
       const { name, call, email } = data;
+      const payList = cart.map((item) => item.productUid);
       if (user) {
         const params = {
           pg: 'uplus',
@@ -69,24 +71,33 @@ const CartPayment: FunctionComponent<CartPaymentProps> = ({
           IMP.request_pay(params, async (res: RequestPayResponse) => {
             const { merchant_uid, imp_uid } = res;
             if (res.success) {
-              await fetchJson('/api/payment/pay', {
+              await axios({
+                url: '/api/payment/pay',
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
+                data: JSON.stringify({
                   merchant_uid,
                   imp_uid,
                   userUid,
+                  payList,
                 }),
-              }).then((res: any) => {
-                mutate();
-                console.log(res);
-
-                router.push(
-                  `/payment/complete?merchant_uid=${res.data.merchant_uid}&imp_uid=${res.data.imp_uid}&userUid=${res.data.userUid}&success=true`,
-                );
-              });
+              })
+                .then((res: any) => {
+                  mutate();
+                  console.log(res);
+                  reset();
+                  router.push(
+                    `/payment/complete?merchant_uid=${merchant_uid}&imp_uid=${imp_uid}&userUid=${userUid}&success=true`,
+                  );
+                })
+                .catch((e) => {
+                  console.log(e);
+                  mutate();
+                  reset();
+                });
             } else {
               setError('결제에 실패했습니다');
+              mutate();
               reset();
             }
           });

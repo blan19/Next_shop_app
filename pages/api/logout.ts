@@ -13,5 +13,6 @@ function logoutRoute(req: NextApiRequest, res: NextApiResponse<User>) {
     uid: '',
     admin: false,
     fullAddress: '',
+    name: '',
   });
 }

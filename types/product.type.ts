@@ -12,6 +12,7 @@ export type IProduct = {
   deliveryFree: boolean;
   infoPath: string[] | null;
   option: boolean;
+  count: number;
   optionInfo: { contents: string }[] | null;
   price: string;
   size: boolean;

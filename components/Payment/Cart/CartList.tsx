@@ -3,6 +3,7 @@ import { CartContainerProps } from './CartContainer';
 import styled from 'styled-components';
 import fetchJson from '@/utils/lib/fetchJson';
 import CartItem from './CartItem';
+import { uid } from 'uid';
 
 const CartList: FunctionComponent<CartContainerProps> = ({
   cart,
@@ -26,7 +27,7 @@ const CartList: FunctionComponent<CartContainerProps> = ({
       </div>
       <ul>
         {cart.map((item) => (
-          <li key={`${item.title}-${item.option?.map((ot) => ot)}`}>
+          <li key={uid(10)}>
             <CartItem userUid={userUid} cartItem={item} mutate={mutate} />
           </li>
         ))}

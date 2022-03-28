@@ -4,7 +4,7 @@ import axios from 'axios';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default async function pay(req: NextApiRequest, res: NextApiResponse) {
-  const { merchant_uid, imp_uid, userUid } = req.body;
+  const { merchant_uid, imp_uid, userUid, payList } = req.body;
   try {
     // 토큰 발급
     const getToken = await axios({
@@ -12,8 +12,8 @@ export default async function pay(req: NextApiRequest, res: NextApiResponse) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       data: {
-        imp_key: process.env.NEXT_PUBLIC_API_KEY,
-        imp_secret: process.env.NEXT_PUBLIC_SECRET_KEY,
+        imp_key: process.env.NEXT_PUBLIC_IAMPORT_API_KEY,
+        imp_secret: process.env.NEXT_PUBLIC_IAMPORT_SECRET_KEY,
       },
     });
 
@@ -47,12 +47,20 @@ export default async function pay(req: NextApiRequest, res: NextApiResponse) {
             createAt: firebaseNow,
             updateAt: firebaseNow,
           });
+          await payList.map(
+            async (string: string) =>
+              await firebaseDb
+                .collection('products')
+                .doc(string)
+                .update({ count: +1 }),
+          );
           await firebaseDb.collection('cart').doc(userUid).update({ cart: [] });
           res.status(200).json({
             success: true,
             message: '일반 결제 성공',
             data: { merchant_uid, imp_uid, userUid },
           });
+          break;
       }
     } else {
       throw { status: 'forgery', message: '위조된 결제시도' };
