@@ -5,7 +5,16 @@ import styled from 'styled-components';
 
 const WishList = () => {
   return (
-    <Layouts>
+    <Layouts
+      title="위시리스트"
+      description="위시리스트 조회를 위한 페이지"
+      image={null}
+      url={
+        process.env.NEXT_PUBLIC_URL
+          ? process.env.NEXT_PUBLIC_URL
+          : 'https://localhost:3000'
+      }
+    >
       <WishListResponsive>
         <div className="list-info">
           <h1>위시리스트</h1>

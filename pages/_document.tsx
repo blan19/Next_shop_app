@@ -74,10 +74,21 @@ class MyDocument extends Document {
       }
     })();`;
     return (
-      <Html lang="en">
-        <Head></Head>
+      <Html lang="ko">
+        <Head>
+          <html lang="ko" />
+          <meta
+            name="google-site-verification"
+            content="vw1yNIFT-LCDTHTlmQHCzmE08nVjABQ9SPmzBiclhlU"
+          />
+          <meta
+            name="naver-site-verification"
+            content="00e9558b544b2b7c9b2941ff2225aff2b8a2c8a2"
+          />
+        </Head>
         <body>
           <script dangerouslySetInnerHTML={{ __html: noflash }} />
+          <div id="overlay"></div>
           <Main />
           <NextScript />
         </body>

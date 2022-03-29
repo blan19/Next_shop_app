@@ -13,7 +13,16 @@ const Cart = () => {
   } = useRouter();
   const { data: cartData, mutate } = useSWR(id ? `/api/cart/${id}` : null);
   return (
-    <Layouts>
+    <Layouts
+      title="Payment"
+      description={`상품 결제를 위한 페이지`}
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <CartResponsive>
         {cartData && cartData.success ? (
           <>

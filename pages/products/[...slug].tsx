@@ -15,7 +15,16 @@ const Product = ({
   product,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layouts>
+    <Layouts
+      title={product.title}
+      description={`${product.title} ${product.category}`}
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <ProductResponsive>
         <Products product={product} />
       </ProductResponsive>

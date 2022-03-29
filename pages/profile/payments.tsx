@@ -23,7 +23,16 @@ const Payments = () => {
     }
   }, [router, user]);
   return (
-    <Layouts>
+    <Layouts
+      title="결제 내역"
+      description="결제 내역 조회를 위한 페이지"
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <ProfileResponsive>
         {user && user.isLoggedIn && <NavBar link={profileLink(user.uid)} />}
         {userPaymentData && userPaymentData.data.length > 0

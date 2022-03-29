@@ -10,7 +10,16 @@ const Index: NextPage = ({
   recent,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layouts>
+    <Layouts
+      title="Shop"
+      description="next.js built app"
+      image={popular[0].thumbPath[0]}
+      url={
+        process.env.NEXT_PUBLIC_URL
+          ? process.env.NEXT_PUBLIC_URL
+          : 'https://localhost:3000'
+      }
+    >
       <Home>
         <IndexContainer>
           <IndexContainerTitle>

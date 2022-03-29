@@ -15,7 +15,16 @@ const Category = ({
   products,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layouts>
+    <Layouts
+      title={category}
+      description={`앱 카테고리 ${category}`}
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <Home>
         <CategoryList products={products} category={category} />
       </Home>
