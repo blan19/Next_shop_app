@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+<url><loc>https:/</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.142Z</lastmod></url>
+<url><loc>https://admin/dashboard</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://admin/edit</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://admin/receipt</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://admin/register</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://auth/login</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://auth/process/join</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://auth/process/verify</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://payment/complete</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://profile/payments</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://wishlist</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://profile/UNNRZwORKiTIzteu8IVfAh0ML6x1</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://profile/jAdghKeXtGa0KIUDBMsGEB3D0433</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://products/14fc62811453083062a6c17a/정성이 담긴 아이스아메리카노</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://products/76a364c4e7639696937ca44e/닌텐도 스위치</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://products/824b3181ef876a53a5d183f8/연청 데님 자켓</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://products/aec6048627a997e757933e4e/하이넥 롱코트</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://products/b206e3331a4419afb4f55b18/밀푀유나베</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://category/food</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://category/acc</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+<url><loc>https://category/clothes</loc><changefreq>daily</changefreq><priority>0.7</priority><lastmod>2022-03-29T00:28:52.143Z</lastmod></url>
+</urlset>

@@ -1,13 +1,5 @@
 /** @type {import('next').NextConfig} */
-/** @type {import('next-sitemap').IConfig} */
 const nextConfig = {
-  siteUrl: process.env.NEXT_PUBLIC_URL,
-  generateRobotsTxt: true,
-  sitemapSize: 7000,
-  exclude: ['/server-sitemap.xml'],
-  robotsTxtOptions: {
-    additionalSitemaps: [`${process.env.NEXT_PUBLIC_URL}/server-sitemap.xml`],
-  },
   reactStrictMode: true,
   styledComponents: true,
   images: {
