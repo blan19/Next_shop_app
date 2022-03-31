@@ -1,12 +1,13 @@
+import dynamic from 'next/dynamic';
 import { FunctionComponent, useMemo } from 'react';
 import styled from 'styled-components';
 import { Swiper, SwiperProps } from 'swiper/react';
-import ThumbnailItem from './ThumbnailItem';
+const ThumbnailItem = dynamic(() => import('./ThumbnailItem'), { ssr: true });
 
 interface ThumbnailProps {
   images: string[];
-  width: string;
-  height: string;
+  width: string | number;
+  height: string | number;
   radius?: boolean;
 }
 

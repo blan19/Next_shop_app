@@ -5,8 +5,8 @@ import Image from 'next/image';
 
 interface ThumbnailItemProps {
   image: string;
-  width: string;
-  height: string;
+  width: string | number;
+  height: string | number;
   radius?: boolean;
 }
 
@@ -34,7 +34,7 @@ export default ThumbnailItem;
 const SwiperSlideContainer = styled(SwiperSlide)`
   img {
     width: 100%;
-    height: 100%;
+    height: auto;
     border-radius: 0.5rem 0.5rem 0 0;
   }
   img.thumb-radius {

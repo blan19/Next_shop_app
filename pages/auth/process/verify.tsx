@@ -43,7 +43,16 @@ const Verify = () => {
     }
   }, [router, user]);
   return (
-    <Layouts>
+    <Layouts
+      title="Verify"
+      description="회원 이메일 인증을 위한 페이지"
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+      image={null}
+    >
       <VerifyResponsive>
         <div className="verify-wrapper">
           <div className="verify-info">

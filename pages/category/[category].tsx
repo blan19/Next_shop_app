@@ -2,9 +2,8 @@ import { IProduct } from '@/types/product.type';
 import { firebaseDb } from '@/utils/firebase/clientApp';
 import Layouts from 'Layouts';
 import Home from 'Layouts/Home';
-import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
+import { GetStaticPaths, GetStaticProps, InferGetStaticPropsType } from 'next';
 import CategoryList from '@/components/Category';
-import { useRouter } from 'next/router';
 import { ParsedUrlQuery } from 'querystring';
 
 interface CategoryQuery extends ParsedUrlQuery {
@@ -12,16 +11,22 @@ interface CategoryQuery extends ParsedUrlQuery {
 }
 
 const Category = ({
+  category,
   products,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { query } = useRouter();
-  const { category } = query as CategoryQuery;
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Layouts>
+    <Layouts
+      title={category}
+      description={`앱 카테고리 ${category}`}
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <Home>
-        {category && (
-          <CategoryList products={products} category={category.toUpperCase()} />
-        )}
+        <CategoryList products={products} category={category} />
       </Home>
     </Layouts>
   );
@@ -29,13 +34,41 @@ const Category = ({
 
 export default Category;
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const snapshot = await firebaseDb.collection('products').get();
+    const snapsoht = await firebaseDb.collection('products').get();
+    const res = snapsoht.docs.map((doc) => doc.data());
+    const products: IProduct[] = JSON.parse(JSON.stringify(res));
+    const paths = Array.from(
+      new Set<string>(products.map((product) => product.category)),
+    ).map((string) => {
+      return {
+        params: {
+          category: string.toLowerCase(),
+        },
+      };
+    });
+    return {
+      paths,
+      fallback: false,
+    };
+  } catch (e) {
+    throw e;
+  }
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const { category } = params as CategoryQuery;
+  try {
+    const snapshot = await firebaseDb
+      .collection('products')
+      .where('category', '==', category.toUpperCase())
+      .get();
     const res = snapshot.docs.map((doc) => doc.data());
     const products: IProduct[] = JSON.parse(JSON.stringify(res));
     return {
       props: {
+        category: category.toUpperCase(),
         products,
       },
     };

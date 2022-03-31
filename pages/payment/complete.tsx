@@ -27,7 +27,16 @@ const Complete = ({
 
   if (error || !user || user.uid !== userUid) {
     return (
-      <Layouts>
+      <Layouts
+        title="Redirect"
+        description={`상품 결제 조회를 위한 페이지`}
+        image={null}
+        url={
+          process.env.NEXT_PULBIC_URL
+            ? process.env.NEXT_PULBIC_URL
+            : 'http://localhost:3000'
+        }
+      >
         <CompleteResponsive>
           <div className="complete-not-access">
             <h1>잘못된 주소 접근입니다.</h1>
@@ -39,7 +48,16 @@ const Complete = ({
   }
 
   return (
-    <Layouts>
+    <Layouts
+      title="Redirect"
+      description={`상품 결제 조회를 위한 페이지`}
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <CompleteResponsive>
         <CartRedirect receipt={receipt} success={success} />
       </CompleteResponsive>

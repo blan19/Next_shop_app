@@ -2,7 +2,6 @@ import useLocalStorage from '@/hooks/useLocalStorage';
 import useUser from '@/hooks/useUser';
 import { IProduct } from '@/types/product.type';
 import { flexCenter } from '@/utils/styles/Theme';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FunctionComponent, useState } from 'react';
 import { IoHeartOutline, IoHeart } from 'react-icons/io5';
@@ -20,24 +19,19 @@ const CategoryItem: FunctionComponent<CategoryItemProps> = ({ product }) => {
   const [wish, setWish] = useLocalStorage<IProduct[]>('wish', []);
   const [visible, setVisible] = useState(false);
   return (
-    <CategoryItemContainer>
-      <Thumbnail
-        images={product.thumbPath}
-        width="230px"
-        height="300px"
-        radius
-      />
-      <Link href={`/products/${product.uid}/${product.title}`} passHref>
-        <div className="category-item-info">
-          <h1>
-            ₩{' '}
-            {Number(product.price).toLocaleString('ko-KR', {
-              maximumFractionDigits: 4,
-            })}
-          </h1>
-          <p>{product.title}</p>
-        </div>
-      </Link>
+    <CategoryItemContainer
+      onClick={() => router.push(`/products/${product.uid}/${product.title}`)}
+    >
+      <Thumbnail images={product.thumbPath} width={230} height={300} radius />
+      <div className="category-item-info">
+        <h1>
+          ₩{' '}
+          {Number(product.price).toLocaleString('ko-KR', {
+            maximumFractionDigits: 4,
+          })}
+        </h1>
+        <p>{product.title}</p>
+      </div>
       <div className="category-item-like">
         {wish.some((item) => item.uid === product.uid) ? (
           <IoHeart
@@ -86,8 +80,8 @@ export default CategoryItem;
 
 const CategoryItemContainer = styled.div`
   position: relative;
+  cursor: pointer;
   .category-item-info {
-    cursor: pointer;
     h1 {
       margin-top: 2rem;
       font-size: 1.75rem;

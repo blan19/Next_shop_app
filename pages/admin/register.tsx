@@ -23,7 +23,16 @@ const Register = ({
     }
   }, [router, user.admin, user.isLoggedIn]);
   return (
-    <Layouts>
+    <Layouts
+      title="Register"
+      description="상품 관리를 위한 어드민 페이지"
+      url={
+        process.env.NEXT_PUBLIC_URL
+          ? `${process.env.NEXT_PUBLIC_URL}/admin/register`
+          : 'http:localhost:3000'
+      }
+      image={null}
+    >
       <RegisterResponsive>
         <NavBar link={adminLink} />
         <RegisterForm />

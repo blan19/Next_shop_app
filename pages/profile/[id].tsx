@@ -30,7 +30,16 @@ const Profile = ({
     }
   }, [router, user]);
   return (
-    <Layouts>
+    <Layouts
+      title={firebaseUser.email}
+      description={`${firebaseUser.email} 프로필`}
+      image={null}
+      url={
+        process.env.NEXT_PULBIC_URL
+          ? process.env.NEXT_PULBIC_URL
+          : 'http://localhost:3000'
+      }
+    >
       <ProfileResponsive>
         <NavBar link={profileLink(id)} />
         <ProfileUserForm user={firebaseUser} mutate={mutateUser} />

@@ -1,14 +1,15 @@
+import dynamic from 'next/dynamic';
 import { IProduct } from '@/types/product.type';
 import { flexCenter } from '@/utils/styles/Theme';
 import { FunctionComponent, useMemo } from 'react';
 import styled from 'styled-components';
-import Thumbnail from '../Common/Thumbnail';
 import ProductInfo from './ProductInfo';
 import ProductPrice from './ProductPrice';
 import ProductsDelivery from './ProductsDelivery';
 import ProductsForm from './ProductsForm';
 import ProductsOption from './ProductsOption';
 import ProductsSize from './ProductsSize';
+const Thumbnail = dynamic(() => import('../Common/Thumbnail'), { ssr: true });
 
 interface ProductsProps {
   product: IProduct;
@@ -63,7 +64,7 @@ const Products: FunctionComponent<ProductsProps> = ({ product }) => {
       </div>
       <div className="products-to">
         <div className="products-to-left">
-          <Thumbnail images={product.thumbPath} width="400px" height="500px" />
+          <Thumbnail images={product.thumbPath} width={400} height={500} />
         </div>
         <div className="products-to-right">
           <div className="products-to-right-info">

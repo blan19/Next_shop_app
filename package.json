@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@hookform/error-message": "^2.0.0",
@@ -45,7 +46,9 @@
     "eslint-config-next": "12.1.0",
     "eslint-config-prettier": "^8.4.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "globby": "^13.1.1",
     "iamport-typings": "^1.3.0",
+    "next-sitemap": "^2.5.14",
     "prettier": "^2.5.1",
     "typescript": "4.5.5"
   }
