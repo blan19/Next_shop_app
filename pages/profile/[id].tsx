@@ -20,7 +20,7 @@ const Profile = ({
   id,
   user: firebaseUser,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const { user } = useUser();
+  const { user, mutateUser } = useUser();
   const router = useRouter();
   useEffect(() => {
     if (user) {
@@ -33,7 +33,7 @@ const Profile = ({
     <Layouts>
       <ProfileResponsive>
         <NavBar link={profileLink(id)} />
-        <ProfileUserForm user={firebaseUser} />
+        <ProfileUserForm user={firebaseUser} mutate={mutateUser} />
       </ProfileResponsive>
     </Layouts>
   );

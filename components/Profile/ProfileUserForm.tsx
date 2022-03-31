@@ -1,39 +1,149 @@
 import { IFirebaseUser } from '@/types/auth.type';
 import { flexCenter, flexColCenter } from '@/utils/styles/Theme';
-import { FunctionComponent } from 'react';
+import { ErrorMessage } from '@hookform/error-message';
+import axios from 'axios';
+import { useRouter } from 'next/router';
+import { User } from 'pages/api/user';
+import { FunctionComponent, useCallback, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { FaUserCircle } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
+import { KeyedMutator } from 'swr';
+import useDarkMode from 'use-dark-mode';
+import Modal from '../Common/Modal';
+
+interface FormTypes {
+  name: string;
+  address: string;
+}
 
 interface ProfileUserFormProps {
   user: IFirebaseUser;
+  mutate: KeyedMutator<User>;
 }
 
-const ProfileUserForm: FunctionComponent<ProfileUserFormProps> = ({ user }) => {
+const ProfileUserForm: FunctionComponent<ProfileUserFormProps> = ({
+  user,
+  mutate,
+}) => {
+  const router = useRouter();
+  const darkMode = useDarkMode();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<FormTypes>();
+  const [visible, setVisible] = useState(false);
+  const onSubmit = useCallback(
+    async (data: FormTypes) => {
+      const { name, address } = data;
+      await axios({
+        url: '/api/edit',
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify({ name, address }),
+      })
+        .then(async (res) => {
+          toast('등록을 완료했습니다.', {
+            position: 'top-center',
+            autoClose: 2000,
+            hideProgressBar: true,
+            closeButton: false,
+            theme: darkMode.value ? 'dark' : 'light',
+            style: {
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: '1.5rem',
+              color: 'var(--color-primaryText)',
+              borderRadius: '0.5rem',
+            },
+          });
+          mutate();
+        })
+        .catch((error) => console.error(error));
+    },
+    [darkMode.value, mutate],
+  );
+  const onDelete = useCallback(async () => {
+    await axios('/api/delete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify({ userUid: user.uid }),
+    })
+      .then(async (res) => {
+        await axios.get('/api/logout');
+        mutate();
+        router.push('/');
+      })
+      .catch((error) => console.error(error));
+  }, [mutate, router, user.uid]);
   return (
-    <ProfileUserFormContainer>
-      <div className="profile-user-wrapper">
-        <div className="profile-user-email">
-          <FaUserCircle />
-          <h1>{user.email}</h1>
+    <>
+      <ProfileUserFormContainer onSubmit={handleSubmit(onSubmit)}>
+        <div className="profile-user-wrapper">
+          <div className="profile-user-email">
+            <FaUserCircle />
+            <h1>{user.email}</h1>
+          </div>
+          <div className="profile-user-info">
+            <p>이름</p>
+            <label>
+              <input
+                type="text"
+                defaultValue={user.name}
+                {...register('name', { required: '이름을 적어주세요' })}
+              />
+            </label>
+            <ErrorMessage
+              errors={errors}
+              name="name"
+              render={({ message }) => (
+                <ProfileUserFormError>
+                  <b>❌ {message}</b>
+                </ProfileUserFormError>
+              )}
+            />
+            <p>주소</p>
+            <label>
+              <input
+                type="text"
+                defaultValue={user.address}
+                {...register('address', { required: '주소를 적어주세요' })}
+              />
+            </label>
+            <ErrorMessage
+              errors={errors}
+              name="address"
+              render={({ message }) => (
+                <ProfileUserFormError>
+                  <b>❌ {message}</b>
+                </ProfileUserFormError>
+              )}
+            />
+          </div>
+          <div className="profile-user-button">
+            <button
+              type="button"
+              className="profile-user-button-delete"
+              onClick={() => setVisible(true)}
+            >
+              Delete
+            </button>
+            <button type="submit">Edit</button>
+          </div>
         </div>
-        <div className="profile-user-info">
-          <p>이름</p>
-          <label>
-            <input type="text" value={user.name} readOnly />
-          </label>
-          <p>주소</p>
-          <label>
-            <input type="text" value={user.address} readOnly />
-          </label>
+      </ProfileUserFormContainer>
+      <ToastContainer />
+      <Modal visible={visible} setVisible={setVisible}>
+        <h1>정말로 계정을 삭제하시겠습니까?</h1>
+        <div className="modal-button">
+          <button onClick={onDelete}>계정삭제</button>
+          <button onClick={() => setVisible((prev) => !prev)}>돌아가기</button>
         </div>
-        <div className="profile-user-button">
-          <button type="button" className="profile-user-button-delete">
-            Delete
-          </button>
-          <button type="button">Edit</button>
-        </div>
-      </div>
-    </ProfileUserFormContainer>
+      </Modal>
+    </>
   );
 };
 
@@ -110,5 +220,13 @@ const ProfileUserFormContainer = styled.form`
         }
       }
     }
+  }
+`;
+
+const ProfileUserFormError = styled.div`
+  margin-top: 1rem;
+  b {
+    font-size: 1.75rem;
+    color: red;
   }
 `;
