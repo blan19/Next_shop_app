@@ -6,13 +6,15 @@ import React, {
   useState,
 } from 'react';
 import Responsive from '@/utils/styles/Responsive';
-import { flexColCenter } from '@/utils/styles/Theme';
+import { flexCenter, flexColCenter } from '@/utils/styles/Theme';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
 import AuthAdress from './AuthAdress';
 import { useRouter } from 'next/router';
 import useUser from '@/hooks/useUser';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface AuthFormProps {
   auth: string;
@@ -78,7 +80,38 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
         });
       }
     } catch (error) {
-      console.log(error);
+      const { status } = JSON.parse(JSON.stringify(error));
+      if (status === 400) {
+        toast('계정 정보가 잘못되었습니다.', {
+          position: 'top-center',
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeButton: false,
+          type: 'error',
+          style: {
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+            color: 'var(--color-primaryText)',
+            borderRadius: '0.5rem',
+          },
+        });
+      } else if (status === 401) {
+        toast('회원가입에 실패했습니다.', {
+          position: 'top-center',
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeButton: false,
+          type: 'error',
+          style: {
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: '1.5rem',
+            color: 'var(--color-primaryText)',
+            borderRadius: '0.5rem',
+          },
+        });
+      }
     }
   };
 
@@ -256,8 +289,19 @@ const AuthForm: FunctionComponent<AuthFormProps> = ({ auth }) => {
               <button>로그인</button>
             )}
           </label>
+          {auth === 'Login' && (
+            <div className="auth-etc">
+              <div className="auth-divider"></div>
+              <div className="auth-reminder">
+                <p onClick={() => router.push('/auth/process/remind')}>
+                  비밀번호를 잊으셨나요?
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </AuthFormResponsive>
+      <ToastContainer />
     </AuthFormContainer>
   );
 };
@@ -275,7 +319,7 @@ const AuthFormResponsive = styled(Responsive)`
       cursor: pointer;
       font-size: 3rem;
       font-weight: bold;
-      color: #9ba5ba;
+      color: var(--color-mainColor);
     }
     p {
       margin-top: 1.5rem;
@@ -291,21 +335,21 @@ const AuthFormResponsive = styled(Responsive)`
       padding-top: 1rem;
       span {
         font-size: 2rem;
-        color: #9ba5ba;
+        color: var(--color-mainColor);
       }
       input {
         outline: none;
         border: none;
         background: none;
-        border-bottom: 1.5px solid #9ba5ba;
+        border-bottom: 1.5px solid var(--color-mainColor);
         width: 40rem;
         padding: 1rem 0;
         font-size: 2rem;
-        color: #9ba5ba;
+        color: var(--color-mainColor);
         &::placeholder {
           color: var(--color-subText);
         }
-        -webkit-text-fill-color: #9ba5ba;
+        -webkit-text-fill-color: var(--color-mainColor);
       }
       .auth-adress {
         cursor: pointer;
@@ -320,7 +364,7 @@ const AuthFormResponsive = styled(Responsive)`
         border-radius: 1rem;
         padding: 1.4rem;
         margin-top: 2rem;
-        color: #9ba5ba;
+        color: var(--color-subText);
         cursor: pointer;
       }
     }
@@ -335,8 +379,26 @@ const AuthFormResponsive = styled(Responsive)`
       color: var(--color-subText);
       span {
         cursor: pointer;
-        color: #9ba5ba;
+        color: var(--color-mainColor);
         font-weight: bold;
+      }
+    }
+  }
+  .auth-etc {
+    .auth-divider {
+      margin: 4rem 0;
+      width: 100%;
+      height: 0.5px;
+      background-color: var(--color-mainColor);
+    }
+    .auth-reminder {
+      ${flexCenter}
+      p {
+        font-size: 1.5rem;
+        color: var(--color-mainColor);
+        cursor: pointer;
+        font-weight: bold;
+        text-decoration: underline;
       }
     }
   }

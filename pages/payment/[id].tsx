@@ -1,9 +1,10 @@
 import CartContainer from '@/components/Payment/Cart/CartContainer';
+import useUser from '@/hooks/useUser';
 import { flexCenter } from '@/utils/styles/Theme';
 import Layouts from 'Layouts';
 import { useRouter } from 'next/router';
 import { WishListResponsive } from 'pages/wishlist';
-import { FaSadTear } from 'react-icons/fa';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import useSWR from 'swr';
 
@@ -11,7 +12,19 @@ const Cart = () => {
   const {
     query: { id },
   } = useRouter();
+  const router = useRouter();
+  const { user } = useUser();
   const { data: cartData, mutate } = useSWR(id ? `/api/cart/${id}` : null);
+  useEffect(() => {
+    if (user) {
+      if (!user.isLoggedIn) {
+        router.push('/');
+      }
+      if (user.isLoggedIn && id !== user.uid) {
+        router.push('/');
+      }
+    }
+  }, [id, router, user]);
   return (
     <Layouts
       title="Payment"
@@ -38,10 +51,7 @@ const Cart = () => {
           </>
         ) : (
           <div className="list-error">
-            <h1>
-              존재하지 않은 주소입니다.
-              <FaSadTear />
-            </h1>
+            <h1>장바구니에 상품을 추가해보세요!</h1>
           </div>
         )}
       </CartResponsive>

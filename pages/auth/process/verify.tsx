@@ -79,7 +79,7 @@ const Verify = () => {
 
 export default Verify;
 
-const VerifyResponsive = styled(Responsive)`
+export const VerifyResponsive = styled(Responsive)`
   .verify-wrapper {
     margin-top: 15rem;
     .verify-info {
